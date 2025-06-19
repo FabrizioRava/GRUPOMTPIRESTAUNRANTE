@@ -1,0 +1,46 @@
+/* src/app/app.component.css */
+.app-header {
+  background-color: #f8f9fa; /* Color de fondo del encabezado */
+  padding: 10px 20px;
+  display: flex;
+  align-items: center;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  position: sticky; /* O fixed si quieres que siempre esté visible */
+  top: 0;
+  z-index: 999; /* Asegura que el header esté por encima del contenido */
+}
+
+.app-title {
+  margin: 0;
+  font-size: 1.5rem;
+  color: #333;
+}
+
+.menu-toggle-btn {
+  background: none;
+  border: none;
+  font-size: 1.8rem;
+  cursor: pointer;
+  color: #333; /* Color del icono */
+  padding: 5px;
+  margin-right: 15px; /* Espacio a la derecha del icono */
+}
+
+.menu-toggle-btn:hover {
+  color: #746fba; /* Color al pasar el mouse */
+}
+
+/* Ajuste para el contenido principal para que no quede oculto por el header */
+.app-main-content {
+  padding-top: 0px; /* Ajusta según la altura de tu header si es fijo */
+  /* Si quisieras que el contenido principal se moviera al abrir el sidebar,
+     descomentarías y añadirías la clase 'sidebar-open' dinámicamente: */
+  /* transition: margin-left 0.3s ease-in-out; */
+}
+
+/*
+.app-main-content.sidebar-open {
+  margin-left: 250px; // Ancho del sidebar
+}
+*/
+    

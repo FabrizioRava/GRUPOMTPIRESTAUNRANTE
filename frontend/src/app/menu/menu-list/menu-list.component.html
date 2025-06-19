@@ -1,0 +1,24 @@
+<div>
+  <button (click)="toggleAddForm()">
+    {{ showAddForm ? 'Cancelar' : 'Agregar ítem del menú' }}
+  </button>
+
+  <div *ngIf="showAddForm">
+    <form (ngSubmit)="addMenuItem()">
+      <input type="number" [(ngModel)]="newMenuItem.restaurantId" name="restaurantId" placeholder="ID restaurante" required />
+      <input type="text" [(ngModel)]="newMenuItem.name" name="name" placeholder="Nombre" required />
+      <input type="text" [(ngModel)]="newMenuItem.description" name="description" placeholder="Descripción" />
+      <input type="number" [(ngModel)]="newMenuItem.price" name="price" placeholder="Precio" required />
+      <input type="text" [(ngModel)]="newMenuItem.imageUrl" name="imageUrl" placeholder="URL imagen" />
+      <button type="submit">Guardar</button>
+    </form>
+  </div>
+
+  <ul>
+    <li *ngFor="let item of menuItems">
+      <h3>{{ item.name }} - ${{ item.price }}</h3>
+      <p>{{ item.description }}</p>
+      <img *ngIf="item.imageUrl" [src]="item.imageUrl" alt="{{ item.name }}" width="150" />
+    </li>
+  </ul>
+</div>

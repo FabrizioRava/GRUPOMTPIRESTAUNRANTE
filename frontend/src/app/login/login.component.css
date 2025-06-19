@@ -1,0 +1,86 @@
+
+/* login.component.css */
+/* Importamos la fuente Inter desde Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+/* Personalización de variables CSS de Bootstrap si es necesario, o directamente en clases */
+:root {
+  --bs-primary-subtle: #746fba; /* Tu color principal */
+  --bs-secondary: #e0e0e0; /* Un color secundario para el botón de registrarse */
+  --bs-light-subtle: #efefef; /* El color de fondo del body */
+  --bs-font-sans-serif: 'Inter', sans-serif; /* Fuente por defecto */
+}
+
+/* El contenedor principal de la aplicación, ocupa todo el viewport */
+.min-vh-100 {
+  min-height: 100vh;
+}
+
+/* Estilo para el "mask-group" que es la mitad izquierda de la pantalla */
+.mask-group {
+  width: 50%; /* Ocupa la mitad de la pantalla en desktop */
+  left: 0;
+  top: 0;
+  /* El color se define con --bs-primary-subtle en las variables de Bootstrap o directamente en el HTML */
+  /* Si quieres usar imagen: background: url('../../assets/images/login-bg.jpg') center/cover no-repeat; */
+
+  /* Para que el mask-group sea responsive */
+  @media (max-width: 767.98px) { /* En pantallas pequeñas, el mask-group se hace más pequeño o se oculta */
+    width: 100%; /* Ocupa todo el ancho */
+    height: 30vh; /* Una altura más pequeña */
+    border-bottom-left-radius: 50px;
+    border-bottom-right-radius: 50px;
+    top: 0;
+    left: 0;
+  }
+}
+
+/* Título de Bienvenida */
+.welcome-title {
+  font-family: var(--bs-font-sans-serif);
+  font-weight: 700;
+  font-size: 36px;
+  line-height: 44px;
+  color: var(--bs-primary-subtle);
+  text-align: right;
+  /* Posicionamiento para desktop */
+  top: 175px; /* Ajuste para que se vea similar a tu Figma */
+  right: 10%; /* Espacio a la derecha */
+
+  @media (max-width: 767.98px) { /* En móviles, el título se centra encima de la caja de login */
+    position: relative; /* Cambia a relative para fluir con el contenido */
+    text-align: center;
+    font-size: 28px;
+    line-height: 36px;
+    color: var(--bs-primary-subtle); /* Asegura que el color se mantenga */
+    top: auto;
+    right: auto;
+    width: 100%;
+    margin-bottom: 2rem; /* Espacio debajo del título */
+  }
+}
+
+/* Caja de Login */
+.login-box {
+  width: 500px; /* Ancho fijo para desktop */
+  max-width: 90%; /* Máximo 90% del ancho del viewport para responsividad */
+  /* Centrado para desktop con `justify-content-end` y `align-items-center` en el contenedor padre */
+  /* Añadimos margin-left auto para empujarlo a la derecha en pantallas grandes */
+  margin-left: auto;
+  margin-right: 10%; /* Espacio a la derecha */
+  padding: 40px; /* Padding interno */
+
+  @media (max-width: 767.98px) { /* En móviles, la caja de login se centra completamente */
+    position: relative; /* Cambia a relative para fluir con el contenido */
+    margin: 0 auto; /* Centra horizontalmente */
+    top: auto;
+    transform: none;
+    width: 90%; /* Ajusta el ancho para móviles */
+  }
+}
+
+/* Estilos de input y labels ya cubiertos por Bootstrap con form-label y form-control */
+/* Botones ya cubiertos por Bootstrap con btn y btn-primary/outline-secondary */
+
+
+

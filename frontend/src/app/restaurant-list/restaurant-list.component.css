@@ -1,0 +1,164 @@
+/* src/app/restaurant-list/restaurant-list.component.css */
+/* La importación de fuentes DEBE ir en src/styles.css */
+
+/* Personalización de variables CSS de Bootstrap */
+:root {
+  --bs-primary-subtle: #746fba; /* Tu color principal para títulos y botones */
+  --bs-light-subtle: #efefef; /* El color de fondo del body */
+  --bs-secondary-emphasis: #1D1B20; /* Color para la ubicación */
+  --bs-muted: #49454F; /* Color para la descripción */
+  --bs-font-sans-serif: 'Inter', sans-serif; /* Fuente por defecto */
+}
+
+/* Estilos para el contenedor principal, asegura que ocupe todo el viewport */
+.min-vh-100 {
+  min-height: 100vh;
+}
+
+/* Encabezado */
+.display-5 {
+  font-size: calc(1.425rem + 2.1vw); /* Tamaño de fuente responsivo de Bootstrap */
+}
+@media (min-width: 1200px) {
+  .display-5 {
+    font-size: 3.5rem; /* Tamaño fijo para pantallas muy grandes */
+  }
+}
+
+/* Contenedor relativo para posicionar elementos sobre la imagen */
+.image-overlay-container {
+  /* Asegura que los elementos posicionados absolutos estén relativos a este contenedor */
+  position: relative;
+}
+
+.restaurant-card-image {
+  height: 250px;
+  width: 100%; /* Asegura que la imagen ocupe todo el ancho del contenedor */
+  object-fit: cover;
+}
+
+.restaurant-card-body {
+  padding: 25px; /* Ajuste del padding interno */
+  background-color: white; /* Asegura un fondo blanco para el área del botón */
+}
+
+/* Estilo para el nombre del restaurante sobre la imagen */
+.restaurant-name-title {
+  /* Ajuste de color y fondo para el nombre */
+  background: rgba(255, 255, 255, 0.7); /* Blanco semi-transparente */
+  color: #1D1B20; /* Negro oscuro */
+  padding: 8px 15px; /* Padding interno */
+  margin: 15px; /* Margen del borde */
+  border-radius: 8px; /* Esquinas redondeadas */
+  font-size: 1.8rem; /* Tamaño de fuente, puedes ajustarlo */
+  font-weight: bold;
+  line-height: 1.2;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2); /* Sombra para resaltar */
+}
+
+/* Estilo para la dirección sobre la imagen */
+.restaurant-address-overlay {
+  background: rgba(0, 0, 0, 0.6); /* Negro semi-transparente */
+  color: white; /* Letras blancas */
+  padding: 5px 15px; /* Padding interno */
+  margin: 15px; /* Margen del borde */
+  border-radius: 5px; /* Esquinas redondeadas */
+  font-size: 0.9rem; /* Tamaño de fuente */
+}
+
+
+/* Truncar descripción a 3 líneas */
+.text-truncate-3-lines {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Botón "Ingresar" */
+/* CAMBIO CLAVE: Usa colores más contrastantes para el botón "Ingresar" */
+.btn-primary {
+  background-color: #28a745 !important; /* Un verde vibrante */
+  border-color: #28a745 !important;
+  color: white !important; /* Asegura que el texto sea blanco para mejor contraste */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Añadir una sombra para que resalte más */
+  transition: all 0.3s ease-in-out; /* Suavizar transiciones */
+}
+
+.btn-primary:hover {
+  background-color: #218838 !important; /* Un verde ligeramente más oscuro al pasar el cursor */
+  border-color: #218838 !important;
+  transform: translateY(-2px); /* Pequeño efecto de elevación al pasar el cursor */
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3); /* Sombra más grande al pasar el cursor */
+}
+
+.btn-primary:active {
+  transform: translateY(0); /* Vuelve a la posición original al hacer clic */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15); /* Sombra más pequeña al hacer clic */
+}
+
+
+/* Botones de navegación (flechas) */
+.nav-arrow-btn {
+  color: var(--bs-primary-subtle) !important;
+  border-color: var(--bs-primary-subtle) !important;
+}
+
+.nav-arrow-btn:hover:not(:disabled) {
+  background-color: var(--bs-primary-subtle) !important;
+  color: white !important;
+}
+
+.nav-arrow-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Puntos de navegación */
+.nav-dots .dot {
+  display: block;
+  width: 10px;
+  height: 10px;
+  background: #CAC4D0;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.nav-dots .dot.active {
+  background: var(--bs-primary-subtle);
+}
+
+/* Responsive adjustments */
+@media (max-width: 767.98px) { /* Small devices (phones) */
+  .restaurant-card {
+    margin: 0 auto;
+  }
+  .restaurant-name-title {
+    font-size: 1.4rem; /* Ajuste para móviles */
+    padding: 6px 10px;
+    margin: 10px;
+  }
+  .restaurant-address-overlay {
+    font-size: 0.8rem; /* Ajuste para móviles */
+    padding: 4px 10px;
+    margin: 10px;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 991.98px) { /* Medium devices (tablets) */
+  .restaurant-card-body {
+    padding: 20px;
+  }
+  .restaurant-name-title {
+    font-size: 1.6rem;
+    padding: 7px 12px;
+    margin: 12px;
+  }
+  .restaurant-address-overlay {
+    font-size: 0.85rem;
+    padding: 4px 12px;
+    margin: 12px;
+  }
+}

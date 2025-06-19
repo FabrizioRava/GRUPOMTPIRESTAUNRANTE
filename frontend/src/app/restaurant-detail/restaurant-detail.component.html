@@ -1,0 +1,67 @@
+<div class="restaurant-detail-container">
+  <div *ngIf="isLoading" class="loading-overlay">
+    <app-loading-spinner></app-loading-spinner>
+  </div>
+
+  <div *ngIf="errorMessage" class="error-message">
+    <p>{{ errorMessage }}</p>
+  </div>
+
+  <div *ngIf="restaurant && !isLoading" class="restaurant-card">
+    <h2>{{ restaurant.name }}</h2>
+    <div class="image-wrapper">
+      <img [src]="restaurant.imageUrl" alt="{{ restaurant.name }}" class="restaurant-image" />
+    </div>
+    <p class="description">{{ restaurant.description }}</p>
+
+    <div class="address-info">
+      <h3>Dirección:</h3>
+      <p>{{ restaurant.address.street }} {{ restaurant.address.number }}</p>
+      <p>
+        {{ restaurant.address.city }}
+        <span *ngIf="restaurant.address.department">, {{ restaurant.address.department }}</span>
+        <span *ngIf="restaurant.address.province">, {{ restaurant.address.province }}</span>
+      </p>
+    </div>
+
+    <div class="menu-section">
+      <h3>Menú:</h3>
+      <ul class="list-group" *ngIf="menuItems.length > 0; else noMenuItems">
+        <li class="list-group-item d-flex justify-content-between align-items-center" *ngFor="let item of menuItems">
+          <div>
+            <strong>{{ item.name }}</strong>
+            <span *ngIf="item.category"> ({{ item.category }})</span>
+            <br>
+            <small>{{ item.description }}</small>
+            <br>
+            <strong>Precio: ${{ item.price }}</strong>
+          </div>
+          <div class="d-flex align-items-center">
+            <img [src]="item.imageUrl" alt="{{ item.name }}" class="menu-item-thumb me-2">
+          </div>
+        </li>
+      </ul>
+      <ng-template #noMenuItems>
+        <p class="alert alert-info">No hay ítems en el menú todavía.</p>
+      </ng-template>
+      </div>
+
+    <div *ngIf="isOwner" class="owner-actions">
+      <hr>
+      <h3>Acciones del Propietario:</h3>
+      <button class="action-button edit-button" (click)="onEditClick()">
+        Editar Restaurante
+      </button>
+      <button class="action-button delete-button" (click)="deleteRestaurant()">
+        Eliminar Restaurante
+      </button>
+      <button class="action-button manage-menu-button" (click)="onManageMenuClick()">
+        Gestionar Menú
+      </button>
+    </div>
+  </div>
+
+  <div *ngIf="!restaurant && !isLoading && !errorMessage" class="no-restaurant-found">
+    <p>No se pudo cargar el restaurante.</p>
+  </div>
+</div>

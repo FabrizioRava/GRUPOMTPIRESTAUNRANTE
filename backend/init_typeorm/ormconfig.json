@@ -1,0 +1,13 @@
+{
+  "type": "postgres",
+  "host": "db.YOUR_PROJECT_REF.supabase.co",
+  "port": 5432,
+  "username": "postgres",
+  "password": "your-password",
+  "database": "postgres",
+  "entities": ["dist/**/*.entity{.ts,.js}"],
+  "migrations": ["dist/migrations/*{.ts,.js}"],
+  "cli": {
+    "migrationsDir": "src/migrations"
+  }
+}

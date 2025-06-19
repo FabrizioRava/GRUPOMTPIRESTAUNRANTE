@@ -1,0 +1,100 @@
+    /* src/app/core/sidebar/sidebar.component.css */
+
+    /* Overlay oscuro que cubre el contenido cuando el sidebar está abierto */
+    .sidebar-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5); /* Semi-transparente */
+      z-index: 1000; /* Asegura que esté por encima del contenido principal */
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+    }
+
+    .sidebar-overlay.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    /* Estilos del menú lateral en sí */
+    .sidebar {
+      position: fixed;
+      top: 0;
+      left: -280px; /* Escondido por defecto */
+      width: 250px; /* Ancho del sidebar */
+      height: 100%;
+      background-color: #333; /* Fondo oscuro, similar a Figma */
+      color: white;
+      box-shadow: 2px 0 5px rgba(0, 0, 0, 0.5);
+      z-index: 1001; /* Más alto que el overlay */
+      transition: left 0.3s ease-in-out; /* Animación de entrada/salida */
+      display: flex;
+      flex-direction: column;
+      padding: 20px 0;
+    }
+
+    .sidebar.active {
+      left: 0; /* Visible */
+    }
+
+    .sidebar-header {
+      padding: 0 20px 20px;
+      text-align: right; /* Alinea el botón de cerrar a la derecha */
+    }
+
+    .close-btn {
+      background: none;
+      border: none;
+      color: white;
+      font-size: 1.5rem;
+      cursor: pointer;
+      padding: 5px;
+      transition: color 0.2s ease-in-out;
+    }
+
+    .close-btn:hover {
+      color: #746fba; /* Color del botón de cerrar al pasar el mouse */
+    }
+
+    .sidebar-content {
+      flex-grow: 1; /* Para que el contenido ocupe el espacio restante */
+      padding: 20px 0;
+      display: flex;
+      flex-direction: column;
+      gap: 10px; /* Espacio entre los botones */
+    }
+
+    .sidebar-footer {
+      padding: 20px 0;
+      border-top: 1px solid rgba(255, 255, 255, 0.1); /* Separador visual */
+      text-align: center;
+    }
+
+    .sidebar-button {
+      background: none;
+      border: none;
+      color: white;
+      width: 100%;
+      padding: 15px 20px;
+      text-align: left;
+      font-size: 1.1rem;
+      cursor: pointer;
+      transition: background-color 0.2s ease-in-out;
+    }
+
+    .sidebar-button:hover {
+      background-color: rgba(255, 255, 255, 0.1); /* Fondo claro al pasar el mouse */
+    }
+
+    .logout-button {
+      color: #dc3545; /* Rojo de Bootstrap danger */
+      font-weight: bold;
+    }
+
+    .logout-button:hover {
+      background-color: rgba(220, 53, 69, 0.1); /* Fondo rojo claro al pasar el mouse */
+    }
+    
