@@ -3,8 +3,8 @@ import { Component } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common'; // Asegurarse de importar CommonModule
-import { LoadingSpinnerComponent } from '../../shared/loading-spinner/loading-spinner.component'; // Ruta corregida
-import { AuthService } from '../../services/auth.service'; // Importa TU AuthService
+import { LoadingSpinnerComponent } from '../../../shared/loading-spinner/loading-spinner.component'; // Ruta corregida
+import { AuthService } from '../../../services/auth.service'; // Importa TU AuthService
 import { finalize } from 'rxjs/operators'; // Necesario para el pipe
 
 @Component({

@@ -3,10 +3,10 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router'; // Importar RouterLink
-import { MenuService, MenuItem } from '../../services/menu.service';
+import { MenuService, MenuItem } from '../../../services/menu.service';
 import { HttpErrorResponse } from '@angular/common/http';
-import { LoadingSpinnerComponent } from '../../shared/loading-spinner/loading-spinner.component';
-import { AuthService } from '../../services/auth.service';
+import { LoadingSpinnerComponent } from '../../../shared/loading-spinner/loading-spinner.component';
+import { AuthService } from '../../../services/auth.service';
 
 @Component({
   selector: 'app-menu-management',

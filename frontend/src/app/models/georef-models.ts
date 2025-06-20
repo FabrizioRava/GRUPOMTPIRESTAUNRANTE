@@ -87,3 +87,10 @@ export interface GeorefDireccionesResponse {
   direcciones: GeorefDireccion[];
   total: number;
 }
+
+export interface LocationSelectedEvent {
+  lat: number;
+  lng: number;
+  georefAddress: Partial<GeorefDireccion> | undefined; // Permite que el objeto sea "parcial" (no todas las propiedades requeridas)
+  fullGeorefResponse: any; // Esto ya está bien
+}

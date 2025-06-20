@@ -3,8 +3,8 @@ import { FormsModule } from '@angular/forms'; // Necesario para [(ngModel)]
 import { Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 
-import { LoadingSpinnerComponent } from '../shared/loading-spinner/loading-spinner.component';
-import { AuthService } from '../services/auth.service'; // Ruta verificada
+import { LoadingSpinnerComponent } from '../../../shared/loading-spinner/loading-spinner.component';
+import { AuthService } from '../../../services/auth.service'; // Ruta verificada
 
 @Component({
   selector: 'app-login',

@@ -1,10 +1,11 @@
 // src/app/app.component.ts
-import { Component, OnInit, OnDestroy } from '@angular/core'; // Añadir OnInit y OnDestroy
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterOutlet, Router, NavigationEnd, ActivatedRoute } from '@angular/router'; // Importar Router y NavigationEnd
+// Importa RouterOutlet, Router y NavigationEnd
+import { RouterOutlet, Router, NavigationEnd } from '@angular/router';
 import { SidebarComponent } from './core/sidebar/sidebar.component';
 import { AuthService } from './services/auth.service';
-import { filter, Subscription } from 'rxjs'; // Importar filter y Subscription
+import { filter, Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -13,33 +14,36 @@ import { filter, Subscription } from 'rxjs'; // Importar filter y Subscription
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent implements OnInit, OnDestroy { // Implementar OnInit y OnDestroy
+export class AppComponent implements OnInit, OnDestroy {
   title = 'pedidos-ya';
   isSidebarOpen = false;
-  showMenuButton: boolean = false; // Nueva variable para controlar la visibilidad del botón
-  private routerSubscription: Subscription; // Para manejar la suscripción del router
+  // Cambiamos el nombre a algo más descriptivo para el control del header/sidebar en general.
+  // Será true para todas las rutas excepto login/registro.
+  showAppHeaderAndSidebar: boolean = true;
+  private routerSubscription: Subscription | undefined; // Asegúrate de que pueda ser undefined
 
   constructor(
     private authService: AuthService,
-    private router: Router,
-    private activatedRoute: ActivatedRoute // Inyectar ActivatedRoute
-  ) {
-    // Inicializar la suscripción en el constructor
-    this.routerSubscription = this.router.events.pipe(
-      filter(event => event instanceof NavigationEnd) // Filtra solo los eventos de fin de navegación
-    ).subscribe((event: NavigationEnd) => {
-      // Verifica si la ruta actual es '/restaurants'
-      // Ajusta 'restaurants' si tu ruta es diferente (ej. '/restaurants-list')
-      this.showMenuButton = event.urlAfterRedirects.includes('/restaurants');
-
-      // Opcional: Cierra el sidebar si el usuario navega a otra página
-      // this.isSidebarOpen = false;
-    });
-  }
+    private router: Router
+    // ActivatedRoute no es necesario para esta lógica aquí
+  ) { } // Quita la inicialización de la suscripción del constructor para hacerla en ngOnInit
 
   ngOnInit(): void {
-    // La lógica de suscripción ya está en el constructor.
-    // Esto se ejecutará una vez que el componente se inicialice.
+    // Es mejor iniciar las suscripciones en ngOnInit
+    this.routerSubscription = this.router.events.pipe(
+      filter(event => event instanceof NavigationEnd)
+    ).subscribe((event: NavigationEnd) => {
+      // Determina si la URL actual es una de las rutas de autenticación
+      const isAuthRoute = event.urlAfterRedirects.includes('/auth/login') || event.urlAfterRedirects.includes('/auth/register');
+
+      // showAppHeaderAndSidebar será true si NO estamos en una ruta de autenticación
+      this.showAppHeaderAndSidebar = !isAuthRoute;
+
+      // Si la ruta es de autenticación, asegura que el sidebar esté cerrado
+      if (isAuthRoute) {
+        this.isSidebarOpen = false;
+      }
+    });
   }
 
   ngOnDestroy(): void {
@@ -57,7 +61,11 @@ export class AppComponent implements OnInit, OnDestroy { // Implementar OnInit y
     this.isSidebarOpen = false;
   }
 
+  // Este método `logout` debería ser manejado por el sidebar, no directamente por `app.component.html`
+  // si el botón de logout está en el sidebar.
+  // Sin embargo, si lo tienes en el header principal también, lo mantenemos.
   logout() {
     this.authService.logout();
+    this.isSidebarOpen = false; // Asegurarse de cerrar el sidebar al desloguearse
   }
 }

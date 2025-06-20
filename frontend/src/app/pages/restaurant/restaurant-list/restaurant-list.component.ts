@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule, ActivatedRoute } from '@angular/router'; // Importar ActivatedRoute
-import { RestaurantService } from '../services/restaurant.service';
-import { Restaurant } from '../models/restaurant.model';
-import { LoadingSpinnerComponent } from '../shared/loading-spinner/loading-spinner.component';
+import { RestaurantService } from '../../../services/restaurant.service';
+import { Restaurant } from '../../../models/restaurant.model';
+import { LoadingSpinnerComponent } from '../../../shared/loading-spinner/loading-spinner.component';
 import { HttpErrorResponse } from '@angular/common/http';
-import { AuthService } from '../services/auth.service';
+import { AuthService } from '../../../services/auth.service';
 
 @Component({
   selector: 'app-restaurant-list',
@@ -102,7 +102,7 @@ export class RestaurantListComponent implements OnInit {
 
   enterRestaurant(id: number): void {
     console.log('Ingresando al restaurante con ID:', id);
-    this.router.navigate(['/restaurant', id]);
+    this.router.navigate(['/restaurants', id]); 
   }
 
   isOwner(restaurantUserId: number): boolean {

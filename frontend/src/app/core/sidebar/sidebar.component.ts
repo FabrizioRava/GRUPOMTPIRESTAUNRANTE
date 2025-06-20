@@ -1,57 +1,55 @@
 // src/app/core/sidebar/sidebar.component.ts
-import { Component, Input, Output, EventEmitter } from '@angular/core';
-import { CommonModule } from '@angular/common'; 
-import { Router } from '@angular/router'; 
-import { AuthService } from '../../services/auth.service'; // Importar AuthService
+import { Component, OnInit, Output, EventEmitter, OnDestroy, Input } from '@angular/core'; // <-- Importa 'Input'
+import { Router } from '@angular/router';
+import { AuthService } from '../../services/auth.service';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-sidebar',
-  standalone: true, 
-  imports: [
-    CommonModule, 
-    // Si usas routerLink en el HTML del sidebar, también necesitarías RouterModule
-    // RouterModule
-  ],
   templateUrl: './sidebar.component.html',
-  styleUrls: ['./sidebar.component.css']
+  styleUrls: ['./sidebar.component.css'],
+  standalone: true,
+  imports: [
+    CommonModule
+  ]
 })
-export class SidebarComponent {
-  @Input() isOpen: boolean = false;
+export class SidebarComponent implements OnInit, OnDestroy {
   @Output() closeSidebar = new EventEmitter<void>();
-  @Output() logoutEvent = new EventEmitter<void>();
+  @Input() isOpen: boolean = false; // <-- ¡AQUÍ ESTÁ LA CORRECCIÓN! Declaramos isOpen como Input
+  isAuthenticated: boolean = false;
 
-  constructor(
-    private router: Router,
-    private authService: AuthService // Inyectar AuthService
-  ) {}
+  constructor(private router: Router, private authService: AuthService) {}
 
-  onCloseClick() {
+  ngOnInit(): void {
+    this.isAuthenticated = this.authService.isAuthenticated();
+  }
+
+  ngOnDestroy(): void {
+    // Si tuvieras suscripciones que limpiar, descomenta y asegúrate de que 'authStatusSubscription' esté definido
+    // this.authStatusSubscription?.unsubscribe();
+  }
+
+  onCloseClick(): void {
     this.closeSidebar.emit();
   }
 
-  onAddRestaurantClick() {
-    this.router.navigate(['/add-restaurant']); 
+  onLogoutClick(): void {
+    this.authService.logout();
     this.onCloseClick();
   }
 
-  // --- NUEVO MÉTODO PARA MIS RESTAURANTES ---
-  onMyRestaurantsClick() {
-    this.router.navigate(['/my-restaurants']); // Navega a la nueva ruta para Mis Restaurantes
-    this.onCloseClick(); // Cierra el sidebar después de navegar
-  }
-  // --- FIN NUEVO MÉTODO ---
-
-  onLogoutClick() {
-    this.logoutEvent.emit();
+  onAddRestaurantClick(): void {
+    this.router.navigate(['/restaurants', 'add']);
     this.onCloseClick();
   }
 
-  // --- NUEVA PROPIEDAD: Para controlar la visibilidad del botón "Mis Restaurantes" ---
-  get isAuthenticated(): boolean {
-    return this.authService.isAuthenticated(); // Retorna si el usuario está logueado
+  onMyRestaurantsClick(): void {
+    this.router.navigate(['/restaurants'], { queryParams: { filterByOwner: true } });
+    this.onCloseClick();
   }
-  // --- FIN NUEVA PROPIEDAD ---
+
+  onViewAllRestaurantsClick(): void {
+    this.router.navigate(['/restaurants']);
+    this.onCloseClick();
+  }
 }
-
-
-    

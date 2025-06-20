@@ -6,9 +6,6 @@ import { GeorefDireccion } from '../../models/georef-models';
 import { firstValueFrom, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
-// --- NUEVA INTERFAZ LOCAL ---
-// Definimos la interfaz aquí mismo para el objeto georefAddress
-// Esto resuelve el error de tipo implícito sin modificar georef-models.ts
 export interface GeorefAddressDetailsFromPicker {
   street?: string;
   number?: string | null;
@@ -18,14 +15,9 @@ export interface GeorefAddressDetailsFromPicker {
   municipalityName?: string;
 }
 
-/**
- * Interfaz para el evento que se emite cuando una ubicación es seleccionada o actualizada en el mapa.
- * Incluye las coordenadas y, opcionalmente, los detalles de la dirección geocodificada por GeoRef.
- */
 export interface LocationSelectedEvent {
   lat: number;
   lng: number;
-  // Usamos la interfaz local aquí
   georefAddress?: GeorefAddressDetailsFromPicker;
   fullGeorefResponse?: GeorefDireccion;
 }
@@ -40,17 +32,15 @@ export interface LocationSelectedEvent {
 export class LocationPickerComponent implements OnInit, OnDestroy, AfterViewInit {
   @Output() locationSelected = new EventEmitter<LocationSelectedEvent>();
 
-  @Input() initialLat: number = -34.6037; // Latitud por defecto (Buenos Aires, Argentina)
-  @Input() initialLng: number = -58.3816; // Longitud por defecto (Buenos Aires, Argentina)
+  @Input() initialLat: number = -34.6037;
+  @Input() initialLng: number = -58.3816;
   @Input() initialZoom: number = 6;
   @Input() enableMarker: boolean = true;
 
   @ViewChild('mapContainer', { static: true }) mapContainer!: ElementRef;
 
   private map?: L.Map;
-  // CAMBIO: Hacer currentMarker público para acceso desde el componente padre si es necesario
   public currentMarker?: L.Marker;
-  // CAMBIO: Hacer isMapReady público para acceso desde el componente padre
   public isMapReady = false;
 
   constructor(private georefService: GeorefService) { }
@@ -103,8 +93,6 @@ export class LocationPickerComponent implements OnInit, OnDestroy, AfterViewInit
 
     if (this.enableMarker && (this.initialLat !== 0 || this.initialLng !== 0) && (this.initialLat !== null && this.initialLng !== null)) {
       this.addOrUpdateMarker(this.initialLat, this.initialLng);
-      // CAMBIO CLAVE: ELIMINAR esta línea para evitar la emisión inicial no deseada
-      // this.reverseGeocodeAndEmit(this.initialLat, this.initialLng);
     }
 
     this.setupMapClickHandler();
