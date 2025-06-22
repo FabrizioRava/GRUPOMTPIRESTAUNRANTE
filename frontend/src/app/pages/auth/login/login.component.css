@@ -1,86 +1,228 @@
+/* src/app/login/login.component.css */
 
-/* login.component.css */
-/* Importamos la fuente Inter desde Google Fonts */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
-
-/* Personalización de variables CSS de Bootstrap si es necesario, o directamente en clases */
-:root {
-  --bs-primary-subtle: #746fba; /* Tu color principal */
-  --bs-secondary: #e0e0e0; /* Un color secundario para el botón de registrarse */
-  --bs-light-subtle: #efefef; /* El color de fondo del body */
-  --bs-font-sans-serif: 'Inter', sans-serif; /* Fuente por defecto */
-}
-
-/* El contenedor principal de la aplicación, ocupa todo el viewport */
-.min-vh-100 {
+/* ---------------------------------------------------- */
+/* Contenedor Principal Global                          */
+/* ---------------------------------------------------- */
+.main-container {
   min-height: 100vh;
+  background-color: #f0f2f5; /* Fondo general muy claro */
+  position: relative;
+  overflow: hidden; /* Crucial para que el SVG se vea correctamente */
+  display: flex; /* Asegura que el contenido se alinee con flexbox */
 }
 
-/* Estilo para el "mask-group" que es la mitad izquierda de la pantalla */
-.mask-group {
-  width: 50%; /* Ocupa la mitad de la pantalla en desktop */
+/* ---------------------------------------------------- */
+/* La Forma Morada con SVG (purple-blob-svg)            */
+/* ---------------------------------------------------- */
+.purple-blob-svg {
+  /* Usamos el SVG como imagen de fondo */
+  background-image: url('/assets/purple-shape.svg'); /* ¡Asegúrate de que la ruta sea correcta! */
+  background-size: cover; /* Cubre todo el contenedor */
+  background-repeat: no-repeat;
+  background-position: left center; /* Asegura que esté a la izquierda y centrado verticalmente */
+  
+  width: 70%; /* Le damos un ancho fijo para que la forma se extienda como en la imagen */
+  height: 100%;
   left: 0;
   top: 0;
-  /* El color se define con --bs-primary-subtle en las variables de Bootstrap o directamente en el HTML */
-  /* Si quieres usar imagen: background: url('../../assets/images/login-bg.jpg') center/cover no-repeat; */
+  z-index: 0; /* Asegura que esté en el fondo */
+  
+  /* Puedes ajustar la transformación si el SVG no se alinea como esperas */
+  /* transform: translateX(-5%); */
+}
 
-  /* Para que el mask-group sea responsive */
-  @media (max-width: 767.98px) { /* En pantallas pequeñas, el mask-group se hace más pequeño o se oculta */
-    width: 100%; /* Ocupa todo el ancho */
-    height: 30vh; /* Una altura más pequeña */
-    border-bottom-left-radius: 50px;
-    border-bottom-right-radius: 50px;
+/* ---------------------------------------------------- */
+/* Contenedor del Título y Formulario (content-wrapper) */
+/* ---------------------------------------------------- */
+.content-wrapper {
+  /* Estas propiedades de Bootstrap ya centran el contenido */
+  /* d-flex flex-grow-1 flex-column justify-content-center align-items-center */
+  width: 100%;
+  max-width: 1200px; /* Limita el ancho en pantallas grandes */
+  z-index: 1; /* Para que esté por encima del SVG */
+  padding: 2rem;
+  
+  /* Alineamos el content-wrapper a la derecha de la pantalla visible */
+  margin-left: auto; /* Empuja el contenedor a la derecha */
+  margin-right: 0; /* Sin margen a la derecha del todo */
+  
+  /* Espacio extra para que el formulario no esté pegado al borde derecho */
+  padding-right: 5vw; /* Añade un padding a la derecha, responsive */
+}
+
+/* ---------------------------------------------------- */
+/* Título de Bienvenida (¡Ahora con el color morado correcto y visible!) */
+/* ---------------------------------------------------- */
+.welcome-title-purple {
+  font-size: 3.5rem; /* Tamaño de fuente grande */
+  font-weight: 800; /* Extra negrita */
+  color: #7B6CC9; /* ¡El color morado del diseño! */
+  margin-bottom: 1.5rem; /* Espacio entre el título y la caja de login */
+  text-align: center; /* Centrado respecto a la caja de login */
+  line-height: 1.2;
+  white-space: nowrap; /* Evita que el texto se rompa en varias líneas */
+  
+  /* Ajustar el posicionamiento horizontal del título */
+  /* La imagen muestra que el título no está centrado con el formulario, sino un poco a la izquierda de él */
+  transform: translateX(-15%); /* Mueve el título ligeramente a la izquierda. Ajusta este valor. */
+}
+
+/* ---------------------------------------------------- */
+/* Caja de Login (login-box)                            */
+/* ---------------------------------------------------- */
+.login-box {
+  background-color: #ffffff;
+  border-radius: 25px; /* Bordes redondeados de la tarjeta */
+  padding: 2.5rem 3.5rem; /* Padding generoso */
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15); /* Sombra pronunciada y difusa */
+  max-width: 450px; /* Ancho máximo para el formulario */
+  width: 100%; /* Asegura que se adapte */
+}
+
+/* ---------------------------------------------------- */
+/* Campos de Formulario (inputs)                        */
+/* ---------------------------------------------------- */
+.form-label {
+  font-weight: 600;
+  color: #343a40;
+  font-size: 0.95rem;
+  margin-bottom: 0.4rem;
+}
+
+.form-control-lg {
+  height: 3.2rem;
+  padding: 0.75rem 1.2rem;
+  font-size: 1rem;
+  border-radius: 50px; /* ¡Bordes pastilla para los inputs! */
+  border: 1px solid #ced4da;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.form-control-lg:focus {
+  border-color: #7B6CC9; /* Borde morado al enfocar */
+  box-shadow: 0 0 0 0.25rem rgba(123, 108, 201, 0.25); /* Sombra morada suave al enfocar */
+}
+
+/* ---------------------------------------------------- */
+/* Botones                                              */
+/* ---------------------------------------------------- */
+.btn-lg.rounded-pill {
+  height: 3.5rem;
+  font-size: 1.1rem;
+  font-weight: 700;
+  border-radius: 50px; /* Bordes pastilla */
+  transition: all 0.2s ease-in-out;
+}
+
+/* Botón "Ingresar" (Primario) */
+.btn-primary {
+  background-color: #7B6CC9; /* Morado para el botón primario */
+  border-color: #7B6CC9;
+  color: #ffffff;
+}
+
+.btn-primary:hover {
+  background-color: #6A5CA8; /* Morado un poco más oscuro al pasar el mouse */
+  border-color: #6A5CA8;
+}
+
+/* Botón "Registrarse" (Outline Secundario) */
+.btn-outline-secondary {
+  background-color: transparent;
+  color: #7B6CC9; /* Texto morado */
+  border: 2px solid #7B6CC9; /* Borde morado de 2px, más visible */
+  font-weight: 700;
+}
+
+.btn-outline-secondary:hover {
+  background-color: #7B6CC9;
+  color: #ffffff;
+  border-color: #7B6CC9;
+}
+
+/* Botón "Olvidé mi contraseña" (Link) */
+.btn-link {
+  color: #7B6CC9; /* Morado */
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.btn-link:hover {
+  text-decoration: underline;
+}
+
+/* ---------------------------------------------------- */
+/* Mensajes de Alerta                                   */
+/* ---------------------------------------------------- */
+.alert {
+  border-radius: 0.5rem;
+  font-size: 0.9rem;
+  padding: 0.8rem 1.2rem;
+}
+
+/* ---------------------------------------------------- */
+/* Ajustes Responsivos (para Mobile y Tablet)           */
+/* ---------------------------------------------------- */
+@media (max-width: 991.98px) { /* Tablets y pantallas más pequeñas */
+  .main-container {
+    flex-direction: column; /* Apila los elementos verticalmente */
+    justify-content: flex-start; /* Alinea al inicio en el eje principal */
+    align-items: center; /* Centra horizontalmente los elementos apilados */
+  }
+
+  .purple-blob-svg {
+    /* En mobile, podemos hacer la forma morada más pequeña y posicionarla diferente */
+    width: 100vw;
+    height: 100vw; /* Para que sea circular */
+    background-size: cover; /* Ajusta la imagen SVG */
+    background-position: center bottom; /* Posiciona en el centro y abajo */
+    border-radius: 0 0 50% 50%; /* Media luna inferior para que la parte superior sea curva */
+    transform: translateY(-50%) translateX(0%); /* Sube la burbuja a la mitad y centra horizontalmente */
     top: 0;
     left: 0;
+    position: relative; /* Para que fluya en el documento */
+  }
+  
+  .content-wrapper {
+    padding-top: 1rem;
+    padding-bottom: 2rem;
+    margin: 0 auto;
+    padding-right: 1rem; /* Ajuste el padding para mobile */
+    padding-left: 1rem;
+  }
+
+  .welcome-title-purple {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    transform: translateX(0%); /* Quita la transformación en mobile */
+    margin-top: 50px; /* Dale espacio desde arriba de la burbuja */
+  }
+
+  .login-box {
+    margin-top: -80px; /* Superpone el login box sobre la burbuja morada */
+    border-radius: 1.5rem;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    padding: 2rem 1.5rem;
+    max-width: 90%;
+  }
+
+  .form-control-lg, .btn-lg.rounded-pill {
+    height: 3rem;
+    font-size: 1rem;
+    padding: 0.6rem 1rem;
   }
 }
 
-/* Título de Bienvenida */
-.welcome-title {
-  font-family: var(--bs-font-sans-serif);
-  font-weight: 700;
-  font-size: 36px;
-  line-height: 44px;
-  color: var(--bs-primary-subtle);
-  text-align: right;
-  /* Posicionamiento para desktop */
-  top: 175px; /* Ajuste para que se vea similar a tu Figma */
-  right: 10%; /* Espacio a la derecha */
-
-  @media (max-width: 767.98px) { /* En móviles, el título se centra encima de la caja de login */
-    position: relative; /* Cambia a relative para fluir con el contenido */
-    text-align: center;
-    font-size: 28px;
-    line-height: 36px;
-    color: var(--bs-primary-subtle); /* Asegura que el color se mantenga */
-    top: auto;
-    right: auto;
-    width: 100%;
-    margin-bottom: 2rem; /* Espacio debajo del título */
+@media (max-width: 575.98px) { /* Extra small devices (portrait phones) */
+  .purple-blob-svg {
+    height: 80vw; /* Más pequeña la burbuja en pantallas muy chicas */
+    transform: translateY(-60%) translateX(0%);
+  }
+  .welcome-title-purple {
+    font-size: 2rem;
+  }
+  .login-box {
+    margin-top: -60px; /* Ajuste de superposición para pantallas pequeñas */
+    padding: 1.5rem 1rem;
   }
 }
-
-/* Caja de Login */
-.login-box {
-  width: 500px; /* Ancho fijo para desktop */
-  max-width: 90%; /* Máximo 90% del ancho del viewport para responsividad */
-  /* Centrado para desktop con `justify-content-end` y `align-items-center` en el contenedor padre */
-  /* Añadimos margin-left auto para empujarlo a la derecha en pantallas grandes */
-  margin-left: auto;
-  margin-right: 10%; /* Espacio a la derecha */
-  padding: 40px; /* Padding interno */
-
-  @media (max-width: 767.98px) { /* En móviles, la caja de login se centra completamente */
-    position: relative; /* Cambia a relative para fluir con el contenido */
-    margin: 0 auto; /* Centra horizontalmente */
-    top: auto;
-    transform: none;
-    width: 90%; /* Ajusta el ancho para móviles */
-  }
-}
-
-/* Estilos de input y labels ya cubiertos por Bootstrap con form-label y form-control */
-/* Botones ya cubiertos por Bootstrap con btn y btn-primary/outline-secondary */
-
-
-

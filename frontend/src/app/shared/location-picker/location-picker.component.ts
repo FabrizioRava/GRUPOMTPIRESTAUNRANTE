@@ -18,6 +18,7 @@ export interface GeorefAddressDetailsFromPicker {
 export interface LocationSelectedEvent {
   lat: number;
   lng: number;
+  zoom: number; // Agregamos la propiedad zoom aquí
   georefAddress?: GeorefAddressDetailsFromPicker;
   fullGeorefResponse?: GeorefDireccion;
 }
@@ -39,9 +40,12 @@ export class LocationPickerComponent implements OnInit, OnDestroy, AfterViewInit
 
   @ViewChild('mapContainer', { static: true }) mapContainer!: ElementRef;
 
-  private map?: L.Map;
+  public map?: L.Map;
   public currentMarker?: L.Marker;
   public isMapReady = false;
+
+  // Propiedad para almacenar el zoom actual del mapa
+  private currentMapZoom: number = this.initialZoom;
 
   constructor(private georefService: GeorefService) { }
 
@@ -61,8 +65,12 @@ export class LocationPickerComponent implements OnInit, OnDestroy, AfterViewInit
   }
 
   ngAfterViewInit(): void {
+    // Inicializamos el mapa solo si no está listo
+    // Damos un pequeño respiro para que el DOM se asiente
     setTimeout(() => {
-      this.initializeMap();
+      if (!this.map) {
+        this.initializeMap();
+      }
     }, 0);
   }
 
@@ -71,31 +79,31 @@ export class LocationPickerComponent implements OnInit, OnDestroy, AfterViewInit
   }
 
   private initializeMap(): void {
-    if (this.map) {
-      this.map.remove();
+    // Solo inicializa el mapa si no existe
+    if (this.mapContainer && this.mapContainer.nativeElement && !this.map) {
+      const lat = this.initialLat ?? -34.6037;
+      const lng = this.initialLng ?? -58.3816;
+
+      this.map = L.map(this.mapContainer.nativeElement).setView(
+        [lat, lng],
+        this.initialZoom // Usamos el initialZoom en la primera carga
+      );
+
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+      }).addTo(this.map);
+
+      this.map.invalidateSize();
+      this.isMapReady = true;
+
+      if (this.enableMarker && (this.initialLat !== 0 || this.initialLng !== 0) && (this.initialLat !== null && this.initialLng !== null)) {
+        this.addOrUpdateMarker(this.initialLat, this.initialLng);
+      }
+
+      this.setupMapClickHandler();
+      this.setupMapZoomHandler(); // Añadir un manejador para capturar cambios de zoom
     }
-
-    const lat = this.initialLat ?? -34.6037;
-    const lng = this.initialLng ?? -58.3816;
-
-    this.map = L.map(this.mapContainer.nativeElement).setView(
-      [lat, lng],
-      this.initialZoom
-    );
-
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      maxZoom: 19,
-      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-    }).addTo(this.map);
-
-    this.map?.invalidateSize();
-    this.isMapReady = true;
-
-    if (this.enableMarker && (this.initialLat !== 0 || this.initialLng !== 0) && (this.initialLat !== null && this.initialLng !== null)) {
-      this.addOrUpdateMarker(this.initialLat, this.initialLng);
-    }
-
-    this.setupMapClickHandler();
   }
 
   private setupMapClickHandler(): void {
@@ -109,9 +117,19 @@ export class LocationPickerComponent implements OnInit, OnDestroy, AfterViewInit
     });
   }
 
+  // Nuevo manejador de eventos para el zoom del mapa
+  private setupMapZoomHandler(): void {
+    if (!this.map) return;
+    this.map.on('zoomend', () => {
+      this.currentMapZoom = this.map!.getZoom(); // Actualizar el zoom actual al finalizar el zoom
+      console.log('Map zoom changed to:', this.currentMapZoom); // Para depuración
+    });
+  }
+
+
   private cleanupMap(): void {
     if (this.map) {
-      this.map.off();
+      this.map.off(); // Desactiva todos los eventos
       this.map.remove();
       this.map = undefined;
     }
@@ -125,18 +143,20 @@ export class LocationPickerComponent implements OnInit, OnDestroy, AfterViewInit
 
   public setMapCenterAndMarker(lat: number, lng: number, zoom?: number): void {
     if (!this.isMapReady || !this.map) {
+      // Si el mapa no está listo, intentamos de nuevo después de un pequeño retraso
+      // Esto es crucial para cuando se llama desde el padre antes de que initializeMap haya terminado
       setTimeout(() => this.setMapCenterAndMarker(lat, lng, zoom), 100);
       return;
     }
 
-    const currentZoom = this.map.getZoom();
-    const effectiveZoom = zoom !== undefined ? zoom : currentZoom;
+    // Usamos el zoom pasado o el zoom actual del mapa
+    const effectiveZoom = zoom !== undefined ? zoom : this.currentMapZoom;
 
     this.map.setView([lat, lng], effectiveZoom);
     if (this.enableMarker) {
       this.addOrUpdateMarker(lat, lng);
     }
-    this.map.invalidateSize();
+    this.map.invalidateSize(); // Asegurarse de que el mapa se redibuje correctamente
   }
 
   private addOrUpdateMarker(lat: number, lng: number): void {
@@ -199,13 +219,14 @@ export class LocationPickerComponent implements OnInit, OnDestroy, AfterViewInit
       this.locationSelected.emit({
         lat,
         lng,
+        zoom: this.currentMapZoom, // Incluir el zoom actual al emitir el evento
         georefAddress,
         fullGeorefResponse
       });
 
     } catch (error) {
       console.error('Error inesperado durante reverseGeocodeAndEmit:', error);
-      this.locationSelected.emit({ lat, lng, georefAddress: {}, fullGeorefResponse: undefined });
+      this.locationSelected.emit({ lat, lng, zoom: this.currentMapZoom, georefAddress: {}, fullGeorefResponse: undefined });
     }
   }
 
@@ -231,10 +252,12 @@ export class LocationPickerComponent implements OnInit, OnDestroy, AfterViewInit
         const lng = primeraDireccion.ubicacion?.lon;
 
         if (lat !== undefined && lng !== undefined && lat !== null && lng !== null) {
-          this.setMapCenterAndMarker(lat, lng);
+          // Llamar a setMapCenterAndMarker con el zoom actual del mapa
+          this.setMapCenterAndMarker(lat, lng, this.currentMapZoom);
           this.locationSelected.emit({
             lat,
             lng,
+            zoom: this.currentMapZoom, // Incluir el zoom actual
             georefAddress: {
               street: primeraDireccion.calle?.nombre || '',
               number: primeraDireccion.altura?.valor !== undefined && primeraDireccion.altura.valor !== null ? String(primeraDireccion.altura.valor) : null,

@@ -1,208 +1,253 @@
-/* src/app/restaurant-detail/restaurant-detail.component.css */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
-.restaurant-detail-container {
+.restaurant-detail-page {
+  font-family: 'Inter', sans-serif;
   display: flex;
   flex-direction: column;
   align-items: center;
   padding: 20px;
-  min-height: calc(100vh - 60px); /* Ajusta si tienes un header fijo */
-  background-color: #f0f2f5; /* Fondo suave para la página */
+  min-height: calc(100vh - 64px); /* Ajustado a la altura del header fijo (64px) */
+  background-color: #f8f9fa; /* Fondo general más claro */
+  box-sizing: border-box;
 }
 
 .restaurant-card {
   background-color: #ffffff;
   border-radius: 12px;
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08), 0 3px 6px rgba(0, 0, 0, 0.05); /* Sombra más pronunciada */
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08); /* Sombra consistente con add-restaurant */
   padding: 30px;
   margin: 20px 0;
-  max-width: 700px;
+  max-width: 600px; /* Restaurante más pequeño */
   width: 100%;
   text-align: center;
-  position: relative; /* Para el spinner */
-  overflow: hidden; /* Asegura que el contenido esté dentro del radio de borde */
+  position: relative;
+  overflow: hidden;
+  box-sizing: border-box;
 }
 
-h2 {
-  font-size: 2.5rem; /* Tamaño de fuente más grande */
-  color: #333;
+.restaurant-name {
+  font-size: 2rem; /* Título del restaurante un poco más pequeño */
+  color: #343a40;
   margin-bottom: 20px;
-  font-weight: 700; /* Negrita */
+  font-weight: 700;
 }
 
 .image-wrapper {
   width: 100%;
-  max-height: 400px; /* Altura máxima para la imagen */
+  max-height: 300px; /* Imagen del restaurante más pequeña */
   overflow: hidden;
-  border-radius: 8px; /* Bordes redondeados para la imagen */
+  border-radius: 8px;
   margin-bottom: 20px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra para la imagen */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .restaurant-image {
   width: 100%;
   height: 100%;
-  object-fit: cover; /* Asegura que la imagen cubra el área sin distorsionarse */
-  display: block; /* Elimina espacio extra debajo de la imagen */
+  object-fit: cover;
+  display: block;
 }
 
-p.description {
-  font-size: 1.1rem; /* Texto de descripción ligeramente más grande */
-  color: #555;
+.restaurant-description {
+  font-size: 1rem; /* Descripción un poco más pequeña */
+  color: #495057;
   line-height: 1.6;
   margin-bottom: 25px;
 }
 
-.address-info h3, .menu-section h3 {
-  font-size: 1.8rem;
-  color: #444;
+.restaurant-address-info, .menu-section {
+  text-align: left; /* Alinea el texto a la izquierda dentro de estas secciones */
+  width: 100%; /* Ocupa todo el ancho de la tarjeta */
+}
+
+.section-title {
+  font-size: 1.6rem; /* Títulos de sección más pequeños */
+  font-weight: 600;
+  color: #343a40;
   margin-top: 25px;
   margin-bottom: 15px;
-  font-weight: 600;
-  border-bottom: 2px solid #eee; /* Separador sutil */
+  border-bottom: 1px solid #e9ecef; /* Separador sutil */
   padding-bottom: 10px;
 }
 
-.address-info p {
-  font-size: 1rem;
-  color: #666;
+.restaurant-address-info p {
+  font-size: 0.95rem; /* Fuente de dirección más pequeña */
+  color: #6c757d;
   line-height: 1.5;
 }
 
-.menu-section ul {
-  list-style: none; /* Eliminar viñetas predeterminadas */
+.menu-items-list {
+  list-style: none;
   padding: 0;
   margin-top: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px; /* Espacio entre los ítems del menú */
 }
 
-/* ESTILOS ESPECÍFICOS PARA LOS ÍTEMS DEL MENÚ (AHORA COMBINADOS Y MEJORADOS) */
-.menu-section .list-group-item { /* Usamos .list-group-item del HTML */
-  background-color: #f9f9f9;
-  border: 1px solid #e0e0e0;
-  border-radius: 8px;
-  padding: 12px 15px;
-  margin-bottom: 10px;
-  display: flex; /* Para poner texto e imagen en la misma línea */
-  justify-content: space-between; /* Espacio entre texto y imagen */
-  align-items: center; /* Centrar verticalmente */
+.menu-item-card {
+  background-color: #ffffff; /* Fondo blanco para cada item */
+  border: 1px solid #e9ecef; /* Borde suave */
+  border-radius: 10px; /* Bordes redondeados */
+  padding: 15px 20px; /* Más padding para hacerlo más grande */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   text-align: left;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05); /* Sombra para cada item de menú */
 }
 
-.menu-section .list-group-item:hover {
+.menu-item-card:hover {
   transform: translateY(-3px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
 }
 
-.menu-section .list-group-item:last-child {
-  margin-bottom: 0;
+.menu-item-content {
+  flex-grow: 1;
+  margin-right: 15px; /* Espacio entre contenido y imagen */
 }
 
-.menu-section .list-group-item strong {
-  font-size: 1.1em;
-  color: #333;
-  margin-bottom: 5px; /* Espacio debajo del nombre */
+.menu-item-name {
+  font-size: 1.3rem; /* Nombre del menú más grande */
+  font-weight: 600;
+  color: #343a40;
+  display: block;
+  margin-bottom: 5px;
 }
 
-.menu-section .list-group-item small {
-  color: #666;
-  display: block; /* Para que la descripción esté en su propia línea */
-  margin-bottom: 5px; /* Espacio debajo de la descripción */
+.menu-item-category {
+  font-size: 0.95rem;
+  color: #6c757d;
+  font-weight: 500;
 }
 
-/* Nueva clase para la imagen del ítem del menú */
-.menu-item-thumb {
-  width: 70px;
-  height: 70px;
+.menu-item-description {
+  font-size: 0.9rem; /* Descripción del menú */
+  color: #6c757d;
+  display: block;
+  margin-top: 5px;
+  margin-bottom: 8px;
+  line-height: 1.4;
+}
+
+.menu-item-price {
+  font-size: 1.1rem; /* Precio del menú más grande */
+  font-weight: 700;
+  color: #7B6CC9; /* Color violeta para el precio */
+}
+
+.menu-item-image-wrapper {
+  flex-shrink: 0;
+  border-radius: 6px;
+  overflow: hidden;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.menu-item-image {
+  width: 90px; /* Imagen del menú más grande */
+  height: 90px; /* Imagen del menú más grande */
   object-fit: cover;
-  border-radius: 4px;
-  margin-left: 15px; /* Espacio a la izquierda de la imagen */
-  flex-shrink: 0; /* Evita que la imagen se encoja si el texto es muy largo */
+  display: block;
 }
 
-/* Estilo para el mensaje de "No hay ítems en el menú" (el nuevo alert-info) */
-.alert-info {
-  background-color: #d1ecf1;
-  color: #0c5460;
-  border: 1px solid #bee5eb;
-  padding: 10px;
-  border-radius: 5px;
-  margin-bottom: 20px;
+.owner-actions-section {
+  margin-top: 30px;
+  padding-top: 20px;
+  border-top: 1px solid #e9ecef;
   text-align: center;
 }
 
-.no-menu-items { /* Mantengo tu clase original por si la usabas en otro lado, aunque alert-info la reemplaza en HTML */
-  font-style: italic;
-  color: #888;
+.owner-buttons-group {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 15px;
   margin-top: 20px;
 }
 
-
-/* --- ESTILOS MEJORADOS PARA BOTONES DE ACCIÓN DEL PROPIETARIO --- */
-.owner-actions {
-  margin-top: 30px;
-  padding-top: 20px;
-  border-top: 1px solid #eee;
-  display: flex;
-  flex-wrap: wrap; /* Permite que los botones se envuelvan en pantallas pequeñas */
-  justify-content: center;
-  gap: 15px; /* Espacio entre botones */
-}
-
-.action-button {
-  padding: 12px 25px;
-  border: none;
-  border-radius: 8px; /* Bordes más redondeados */
+/* Botones genéricos, replicando el estilo de add-restaurant.component.css */
+.btn {
+  padding: 12px 28px;
+  border-radius: 30px;
   font-size: 1rem;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.3s ease; /* Transición suave para todos los cambios */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra inicial */
-  text-transform: uppercase; /* Texto en mayúsculas */
-  letter-spacing: 0.5px; /* Espaciado entre letras */
+  transition: all 0.2s ease-in-out;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
-.action-button:hover {
-  transform: translateY(-3px); /* Efecto "lift" */
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); /* Sombra más grande al pasar el ratón */
+.btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
 }
 
-.action-button:active {
-  transform: translateY(0); /* Vuelve a la posición original al hacer clic */
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08); /* Sombra más pequeña */
+.btn:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.08);
 }
 
-.edit-button {
-  background: linear-gradient(135deg, #4CAF50 0%, #689F38 100%); /* Degradado verde */
-  color: white;
+.btn-edit {
+  background-color: #4CAF50; /* Verde */
+  color: #ffffff;
+  border: 1px solid #4CAF50;
 }
 
-.edit-button:hover {
-  background: linear-gradient(135deg, #689F38 0%, #4CAF50 100%); /* Cambio de degradado al hover */
+.btn-edit:hover {
+  background-color: #45a049;
+  border-color: #45a049;
 }
 
-.delete-button {
-  background: linear-gradient(135deg, #f44336 0%, #d32f2f 100%); /* Degradado rojo */
-  color: white;
+.btn-delete {
+  background-color: #f44336; /* Rojo */
+  color: #ffffff;
+  border: 1px solid #f44336;
 }
 
-.delete-button:hover {
-  background: linear-gradient(135deg, #d32f2f 0%, #f44336 100%); /* Cambio de degradado al hover */
+.btn-delete:hover {
+  background-color: #da190b;
+  border-color: #da190b;
 }
 
-/* Mensajes de error y no encontrado */
-.error-message, .no-restaurant-found {
-  background-color: #ffebee;
-  color: #c62828;
-  border: 1px solid #ef9a9a;
+.btn-manage-menu {
+  background-color: #7B6CC9; /* Violeta principal */
+  color: #ffffff;
+  border: 1px solid #7B6CC9;
+}
+
+.btn-manage-menu:hover {
+  background-color: #6A5CA8;
+  border-color: #6A5CA8;
+}
+
+.message-card {
   border-radius: 8px;
   padding: 15px;
   margin: 20px auto;
   max-width: 600px;
   text-align: center;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
-/* Overlay de carga para la vista de detalles */
+.error-message {
+  background-color: #f8d7da;
+  color: #721c24;
+  border: 1px solid #f5c6cb;
+}
+
+.info-message {
+  background-color: #d1ecf1;
+  color: #0c5460;
+  border: 1px solid #bee5eb;
+}
+
+.no-restaurant-found {
+  font-style: italic;
+  color: #888;
+}
+
 .loading-overlay {
   position: absolute;
   top: 0;
@@ -215,4 +260,43 @@ p.description {
   align-items: center;
   z-index: 1000;
   border-radius: 12px;
+}
+
+/* Media Queries para responsividad */
+@media (max-width: 768px) {
+  .restaurant-card {
+    padding: 20px;
+  }
+
+  .restaurant-name {
+    font-size: 1.8rem;
+  }
+
+  .section-title {
+    font-size: 1.4rem;
+  }
+
+  .menu-item-card {
+    flex-direction: column; /* Apila el contenido y la imagen en móvil */
+    align-items: flex-start;
+    padding: 15px;
+  }
+
+  .menu-item-image-wrapper {
+    margin-top: 10px; /* Espacio entre texto e imagen apilados */
+    margin-left: 0;
+  }
+
+  .menu-item-image {
+    width: 80px;
+    height: 80px;
+  }
+
+  .owner-buttons-group {
+    flex-direction: column;
+  }
+
+  .btn {
+    width: 100%;
+  }
 }

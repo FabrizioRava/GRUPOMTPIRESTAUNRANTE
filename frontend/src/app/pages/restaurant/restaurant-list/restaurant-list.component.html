@@ -1,69 +1,93 @@
-<div class="container-fluid bg-light-subtle min-vh-100 py-4 py-md-5">
+<div class="main-container-list d-flex flex-column min-vh-100 position-relative">
+  <div class="content-area py-4 px-3 flex-grow-1 d-flex flex-column justify-content-center align-items-center">
+    @if (isLoading) {
+      <div class="d-flex justify-content-center align-items-center loading-container">
+        <app-loading-spinner></app-loading-spinner>
+      </div>
+    }
 
-  <div class="d-flex justify-content-between align-items-center mb-4 mb-md-5">
-    <h1 class="display-5 fw-bold text-primary-subtle m-0">Restaurantes</h1>
-  </div>
+    @if (errorMessage) {
+      <div class="alert alert-danger text-center mx-auto my-3" role="alert" style="max-width: 600px;">
+        {{ errorMessage }}
+      </div>
+    }
 
-  <div *ngIf="isLoading" class="d-flex justify-content-center align-items-center py-5">
-    <app-loading-spinner></app-loading-spinner>
-    <p class="ms-3 fs-5 text-secondary">Cargando restaurantes...</p>
-  </div>
+    @if (!isLoading && restaurants.length === 0 && !errorMessage) {
+      <div class="alert alert-info text-center mx-auto my-3" role="alert" style="max-width: 600px;">
+        No hay restaurantes disponibles.
+      </div>
+    }
 
-  <div *ngIf="errorMessage" class="alert alert-danger text-center rounded-3 shadow-sm mx-auto" style="max-width: 600px;" role="alert">
-    {{ errorMessage }}
-  </div>
+    @if (!isLoading && restaurants.length > 0) {
+      <div class="restaurant-carousel-wrapper">
+        <div class="restaurant-carousel-inner d-flex flex-nowrap" #restaurantCarouselInner>
+          @for (restaurant of restaurants; track trackByRestaurantId($index, restaurant)) {
+            <div class="restaurant-card-item">
+              <div class="restaurant-card card shadow-lg rounded-4 overflow-hidden">
+                <div class="card-header d-flex align-items-center p-3">
+                  <div class="avatar initial-circle d-flex justify-content-center align-items-center me-3">
+                    {{ restaurant.name.charAt(0).toUpperCase() }}
+                  </div>
+                  <div class="flex-grow-1">
+                    <h5 class="card-title mb-0">{{ restaurant.name }}</h5>
+                    <p class="card-subtitle text-muted mb-0">{{ restaurant.address.city }}</p>
+                  </div>
+                  <button class="btn btn-options p-0 ms-auto" aria-label="Más opciones">
+                    <i class="fas fa-ellipsis-v"></i>
+                  </button>
+                </div>
 
-  <div *ngIf="!isLoading && !errorMessage && restaurants.length === 0" class="alert alert-info text-center rounded-3 shadow-sm mx-auto" style="max-width: 600px;" role="alert">
-    No hay restaurantes disponibles. ¡Sé el primero en añadir uno!
-  </div>
+                <div class="card-img-container position-relative bg-dark d-flex align-items-center justify-content-center">
+                  <img [src]="restaurant.imageUrl || 'https://placehold.co/650x300/000000/FFFFFF?text=Imagen+No+Disp.'" 
+                       alt="{{ restaurant.name }}" 
+                       class="card-img-top-custom" 
+                       onerror="this.onerror=null; this.src='https://placehold.co/650x300/000000/FFFFFF?text=Imagen+No+Disp.';" />
+                  <div class="image-overlay position-absolute w-100 h-100 d-flex align-items-center justify-content-center">
+                    <span class="overlay-text">{{ restaurant.name }}</span>
+                  </div>
+                </div>
 
-  <div *ngIf="!isLoading && !errorMessage && restaurants.length > 0" class="row justify-content-center g-4 mx-auto" style="max-width: 1200px;">
-    <div class="col-12 col-md-6 col-lg-6" *ngFor="let restaurant of pagedRestaurants; trackBy: trackByRestaurantId">
-      <div class="card restaurant-card border-0 shadow-lg rounded-4 overflow-hidden">
-        <div class="image-overlay-container position-relative">
-          <img [src]="restaurant.imageUrl" [alt]="restaurant.name" class="card-img-top restaurant-card-image">
+                <div class="card-body p-3">
+                  <h6 class="welcome-heading mb-2">Bienvenidos</h6>
+                  <p class="card-text description-text">
+                    {{ restaurant.description || 'Este restaurante aún no ha proporcionado una descripción detallada.' }}
+                  </p>
+                </div>
 
-          <h2 class="restaurant-name-title position-absolute top-0 start-0 z-1 p-2">
-            {{ restaurant.name }}
-          </h2>
-
-          <p class="restaurant-address-overlay position-absolute bottom-0 start-0 z-1 p-2">
-            {{ restaurant.address.street }} {{ restaurant.address.number }}
-          </p>
-        </div>
-
-        <div class="card-body restaurant-card-body">
-          <p class="card-text text-muted mb-4 text-truncate-3-lines">{{ restaurant.description || 'Sin descripción.' }}</p>
-          <div class="d-flex justify-content-between align-items-center mt-auto">
-            <!-- Mostrar "Tu Restaurante" si el usuario logueado es el propietario -->
-            <span *ngIf="isOwner(restaurant.userId)" class="badge bg-success rounded-pill me-2">Tu Restaurante</span>
-            <button (click)="enterRestaurant(restaurant.id)" class="btn btn-primary btn-lg rounded-pill fw-bold py-2 px-4">
-              Ingresar
-            </button>
-          </div>
+                <div class="card-footer p-3 bg-white border-0 text-right">
+                  <button class="btn btn-primary btn-sm rounded-pill" (click)="enterRestaurant(restaurant.id)">Ingresar</button>
+                </div>
+              </div>
+            </div>
+          } @empty {
+            <div class="col-12 text-center text-muted py-5">
+              <p>No hay restaurantes para mostrar en este momento.</p>
+            </div>
+          }
         </div>
       </div>
-    </div>
-  </div>
+    }
 
-  <div *ngIf="!isLoading && restaurants.length > 0 && totalPages > 1" class="d-flex justify-content-center align-items-center mt-5 gap-3">
-    <button class="btn btn-outline-primary rounded-pill py-2 px-3 nav-arrow-btn" (click)="goToPage(currentPage - 1)" [disabled]="currentPage === 1">
-      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-arrow-left" viewBox="0 0 16 16">
-        <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"/>
-      </svg>
-    </button>
-    <div class="d-flex gap-2 nav-dots">
-      <span *ngFor="let pageNum of [].constructor(totalPages); let i = index; trackBy: trackByPageNum"
-            class="dot rounded-circle"
-            [class.active]="currentPage === (i + 1)"
-            (click)="goToPage(i + 1)">
-      </span>
-    </div>
-    <button class="btn btn-outline-primary rounded-pill py-2 px-3 nav-arrow-btn" (click)="goToPage(currentPage + 1)" [disabled]="currentPage === totalPages">
-      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-arrow-right" viewBox="0 0 16 16">
-        <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z"/>
-      </svg>
-    </button>
+    @if (!isLoading && restaurants.length > 0 && totalPages > 1) {
+      <nav aria-label="Page navigation" class="pagination-container d-flex align-items-center justify-content-center mt-4">
+        <ul class="pagination mb-0">
+          <li class="page-item" [class.disabled]="currentCarouselPage === 1">
+            <a class="page-link" href="#" (click)="goToPage(currentCarouselPage - 1); $event.preventDefault()" aria-label="Anterior">
+              <i class="fas fa-chevron-left"></i>
+            </a>
+          </li>
+          @for (pageNum of pageNumbers; track trackByPageNum($index, pageNum)) {
+            <li class="page-item" [class.active]="currentCarouselPage === pageNum">
+              <a class="page-link" href="#" (click)="goToPage(pageNum); $event.preventDefault()">{{ pageNum }}</a>
+            </li>
+          }
+          <li class="page-item" [class.disabled]="currentCarouselPage === totalPages">
+            <a class="page-link" href="#" (click)="goToPage(currentCarouselPage + 1); $event.preventDefault()" aria-label="Siguiente">
+              <i class="fas fa-chevron-right"></i>
+            </a>
+          </li>
+        </ul>
+      </nav>
+    }
   </div>
-
 </div>

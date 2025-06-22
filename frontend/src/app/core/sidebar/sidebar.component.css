@@ -1,100 +1,129 @@
-    /* src/app/core/sidebar/sidebar.component.css */
+/* src/app/core/sidebar/sidebar.component.css */
 
-    /* Overlay oscuro que cubre el contenido cuando el sidebar está abierto */
-    .sidebar-overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-color: rgba(0, 0, 0, 0.5); /* Semi-transparente */
-      z-index: 1000; /* Asegura que esté por encima del contenido principal */
-      opacity: 0;
-      visibility: hidden;
-      transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
-    }
+/* Importar Font Awesome para los iconos (si no está globalmente) */
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css');
+/* Importar fuente Inter */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
-    .sidebar-overlay.active {
-      opacity: 1;
-      visibility: visible;
-    }
+:host {
+  font-family: 'Inter', sans-serif;
+}
 
-    /* Estilos del menú lateral en sí */
-    .sidebar {
-      position: fixed;
-      top: 0;
-      left: -280px; /* Escondido por defecto */
-      width: 250px; /* Ancho del sidebar */
-      height: 100%;
-      background-color: #333; /* Fondo oscuro, similar a Figma */
-      color: white;
-      box-shadow: 2px 0 5px rgba(0, 0, 0, 0.5);
-      z-index: 1001; /* Más alto que el overlay */
-      transition: left 0.3s ease-in-out; /* Animación de entrada/salida */
-      display: flex;
-      flex-direction: column;
-      padding: 20px 0;
-    }
+/* Overlay oscuro que cubre el contenido cuando el sidebar está abierto */
+.sidebar-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6); /* Semi-transparente */
+  z-index: 1000;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+}
 
-    .sidebar.active {
-      left: 0; /* Visible */
-    }
+.sidebar-overlay.active {
+  opacity: 1;
+  visibility: visible;
+}
 
-    .sidebar-header {
-      padding: 0 20px 20px;
-      text-align: right; /* Alinea el botón de cerrar a la derecha */
-    }
+/* Estilos del menú lateral en sí */
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: -280px; /* Escondido por defecto (ancho + un poco de margen) */
+  width: 250px; /* Ancho del sidebar */
+  height: 100%;
+  background-color: #FFFFFF; /* ¡BLANCO para el sidebar! */
+  color: #343a40; /* Color de texto general para el sidebar (un gris oscuro para contraste) */
+  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.4); /* Sombra más suave y extendida */
+  z-index: 1001;
+  transition: left 0.3s ease-in-out;
+  display: flex;
+  flex-direction: column;
+  padding: 0; /* Eliminado el padding superior del sidebar para que el header tenga su propio padding */
+}
 
-    .close-btn {
-      background: none;
-      border: none;
-      color: white;
-      font-size: 1.5rem;
-      cursor: pointer;
-      padding: 5px;
-      transition: color 0.2s ease-in-out;
-    }
+.sidebar.active {
+  left: 0; /* Visible */
+}
 
-    .close-btn:hover {
-      color: #746fba; /* Color del botón de cerrar al pasar el mouse */
-    }
+.sidebar-header {
+  /* Fondo BLANCO para la barra superior del sidebar */
+  background-color: #FFFFFF; /* Mismo blanco que el fondo general del sidebar */
+  padding: 1rem 20px; /* Padding para la barra superior */
+  text-align: right;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1); /* Separador sutil, ahora más oscuro */
+}
 
-    .sidebar-content {
-      flex-grow: 1; /* Para que el contenido ocupe el espacio restante */
-      padding: 20px 0;
-      display: flex;
-      flex-direction: column;
-      gap: 10px; /* Espacio entre los botones */
-    }
+.close-btn {
+  background: none;
+  border: none;
+  color: #343a40; /* ¡Color NEGRO para el botón de cerrar! */
+  font-size: 1.8rem;
+  cursor: pointer;
+  padding: 5px;
+  transition: color 0.2s ease-in-out, background-color 0.2s ease;
+  border-radius: 50%; /* Botón de cierre circular */
+  width: 40px;
+  height: 40px;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+}
 
-    .sidebar-footer {
-      padding: 20px 0;
-      border-top: 1px solid rgba(255, 255, 255, 0.1); /* Separador visual */
-      text-align: center;
-    }
+.close-btn:hover {
+  color: #000000; /* Negro al pasar el mouse */
+  background-color: rgba(0, 0, 0, 0.05); /* Ligero fondo al pasar el mouse */
+}
 
-    .sidebar-button {
-      background: none;
-      border: none;
-      color: white;
-      width: 100%;
-      padding: 15px 20px;
-      text-align: left;
-      font-size: 1.1rem;
-      cursor: pointer;
-      transition: background-color 0.2s ease-in-out;
-    }
+.sidebar-content {
+  flex-grow: 1;
+  padding: 10px 0; /* Padding ajustado para el contenido */
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
 
-    .sidebar-button:hover {
-      background-color: rgba(255, 255, 255, 0.1); /* Fondo claro al pasar el mouse */
-    }
+.sidebar-footer {
+  padding: 15px 0;
+  border-top: 1px solid rgba(0, 0, 0, 0.2); /* Separador más oscuro */
+  text-align: center;
+}
 
-    .logout-button {
-      color: #dc3545; /* Rojo de Bootstrap danger */
-      font-weight: bold;
-    }
+.sidebar-button {
+  background: none;
+  border: none;
+  color: #343a40; /* ¡Color NEGRO para los botones! */
+  width: 100%;
+  padding: 12px 20px;
+  text-align: left;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+  display: flex;
+  align-items: center;
+  font-weight: 500;
+}
 
-    .logout-button:hover {
-      background-color: rgba(220, 53, 69, 0.1); /* Fondo rojo claro al pasar el mouse */
-    }
-    
+.sidebar-button:hover {
+  background-color: #e0e0e0; /* Un gris claro para el hover */
+  color: #000000; /* Negro al pasar el mouse */
+}
+
+.logout-button {
+  color: #dc3545; /* Rojo de Bootstrap para una acción de salida, o puedes usar negro si prefieres */
+  /* Si quieres que sea negro como los demás, cámbialo a #343a40 */
+  font-weight: 600;
+}
+
+.logout-button:hover {
+  background-color: rgba(220, 53, 69, 0.1); /* Fondo rojo transparente al pasar el mouse */
+  color: #dc3545;
+}
+
+/* Margen para los íconos de Font Awesome */
+.mr-2 {
+  margin-right: 0.75rem;
+}

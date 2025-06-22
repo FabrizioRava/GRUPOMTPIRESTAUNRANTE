@@ -1,19 +1,42 @@
-/* src/app/app.component.css */
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+:host {
+  font-family: 'Inter', sans-serif;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: #f0f2f5;
+}
+
+/* Definición de la clase hidden para el control [class.hidden] */
+.hidden {
+  display: none !important;
+}
+
 .app-header {
-  background-color: #f8f9fa; /* Color de fondo del encabezado */
-  padding: 10px 20px;
+  background-color: #7B6CC9;
+  color: #fff;
+  padding: 1rem 1.5rem;
   display: flex;
   align-items: center;
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-  position: sticky; /* O fixed si quieres que siempre esté visible */
+  position: fixed; /* CAMBIO CLAVE: Fija el header en la parte superior */
   top: 0;
-  z-index: 999; /* Asegura que el header esté por encima del contenido */
+  left: 0;
+  width: 100%;
+  height: 64px; /* Ajusta la altura del header (ej: 1rem padding arriba + 1.5rem font-size + 1rem padding abajo = ~64px) */
+  z-index: 10000; /* CAMBIO CLAVE: Un z-index muy alto para que esté por encima de casi todo */
+  justify-content: center;
+  box-sizing: border-box; /* Asegura que el padding se incluya en la altura */
 }
 
 .app-title {
   margin: 0;
   font-size: 1.5rem;
-  color: #333;
+  color: #fff;
+  flex-grow: 1;
+  text-align: center;
 }
 
 .menu-toggle-btn {
@@ -21,26 +44,58 @@
   border: none;
   font-size: 1.8rem;
   cursor: pointer;
-  color: #333; /* Color del icono */
+  color: #fff;
   padding: 5px;
-  margin-right: 15px; /* Espacio a la derecha del icono */
+  margin-right: 15px;
+  transition: color 0.2s ease, background-color 0.2s ease;
+  border-radius: 8px;
 }
 
 .menu-toggle-btn:hover {
-  color: #746fba; /* Color al pasar el mouse */
+  color: #fff;
+  background-color: rgba(255, 255, 255, 0.1);
 }
 
-/* Ajuste para el contenido principal para que no quede oculto por el header */
 .app-main-content {
-  padding-top: 0px; /* Ajusta según la altura de tu header si es fijo */
-  /* Si quisieras que el contenido principal se moviera al abrir el sidebar,
-     descomentarías y añadirías la clase 'sidebar-open' dinámicamente: */
-  /* transition: margin-left 0.3s ease-in-out; */
+  padding-top: 64px; /* CAMBIO CLAVE: Empuja el contenido hacia abajo la altura del header fijo */
+  flex-grow: 1;
 }
 
-/*
-.app-main-content.sidebar-open {
-  margin-left: 250px; // Ancho del sidebar
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  overflow-x: hidden;
+  box-sizing: border-box; /* Asegura que el box-sizing sea consistente */
 }
-*/
-    
+
+/* Regla global para box-sizing si no la tienes en styles.css */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+
+@media (max-width: 768px) {
+  .app-header {
+    height: 56px; /* Ajusta la altura para móviles si es diferente */
+  }
+  .app-main-content {
+    padding-top: 56px; /* Ajusta el padding-top para móviles */
+  }
+  .app-title {
+    font-size: 1.2rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .app-header {
+    padding: 0.8rem 1rem;
+  }
+  .app-title {
+    font-size: 1rem;
+  }
+  .menu-toggle-btn {
+    font-size: 1.5rem;
+    margin-right: 10px;
+  }
+}

@@ -1,21 +1,21 @@
-<div class="restaurant-detail-container">
-  <div *ngIf="isLoading" class="loading-overlay">
+<div class="restaurant-detail-page">
+  <div class="loading-overlay" *ngIf="isLoading">
     <app-loading-spinner></app-loading-spinner>
   </div>
 
-  <div *ngIf="errorMessage" class="error-message">
+  <div class="message-card error-message" *ngIf="errorMessage">
     <p>{{ errorMessage }}</p>
   </div>
 
-  <div *ngIf="restaurant && !isLoading" class="restaurant-card">
-    <h2>{{ restaurant.name }}</h2>
+  <div class="restaurant-card" *ngIf="restaurant && !isLoading">
+    <h2 class="restaurant-name">{{ restaurant.name }}</h2>
     <div class="image-wrapper">
       <img [src]="restaurant.imageUrl" alt="{{ restaurant.name }}" class="restaurant-image" />
     </div>
-    <p class="description">{{ restaurant.description }}</p>
+    <p class="restaurant-description">{{ restaurant.description }}</p>
 
-    <div class="address-info">
-      <h3>Dirección:</h3>
+    <div class="restaurant-address-info">
+      <h3 class="section-title">Dirección:</h3>
       <p>{{ restaurant.address.street }} {{ restaurant.address.number }}</p>
       <p>
         {{ restaurant.address.city }}
@@ -25,43 +25,43 @@
     </div>
 
     <div class="menu-section">
-      <h3>Menú:</h3>
-      <ul class="list-group" *ngIf="menuItems.length > 0; else noMenuItems">
-        <li class="list-group-item d-flex justify-content-between align-items-center" *ngFor="let item of menuItems">
-          <div>
-            <strong>{{ item.name }}</strong>
-            <span *ngIf="item.category"> ({{ item.category }})</span>
-            <br>
-            <small>{{ item.description }}</small>
-            <br>
-            <strong>Precio: ${{ item.price }}</strong>
+      <h3 class="section-title">Menú:</h3>
+      <ul class="menu-items-list" *ngIf="menuItems.length > 0; else noMenuItems">
+        <li class="menu-item-card" *ngFor="let item of menuItems">
+          <div class="menu-item-content">
+            <strong class="menu-item-name">{{ item.name }}</strong>
+            <span *ngIf="item.category" class="menu-item-category"> ({{ item.category }})</span>
+            <p class="menu-item-description">{{ item.description }}</p>
+            <strong class="menu-item-price">Precio: ${{ item.price }}</strong>
           </div>
-          <div class="d-flex align-items-center">
-            <img [src]="item.imageUrl" alt="{{ item.name }}" class="menu-item-thumb me-2">
+          <div class="menu-item-image-wrapper">
+            <img [src]="item.imageUrl" alt="{{ item.name }}" class="menu-item-image">
           </div>
         </li>
       </ul>
       <ng-template #noMenuItems>
-        <p class="alert alert-info">No hay ítems en el menú todavía.</p>
+        <p class="message-card info-message">No hay ítems en el menú todavía.</p>
       </ng-template>
-      </div>
+    </div>
 
-    <div *ngIf="isOwner" class="owner-actions">
+    <div class="owner-actions-section" *ngIf="isOwner">
       <hr>
-      <h3>Acciones del Propietario:</h3>
-      <button class="action-button edit-button" (click)="onEditClick()">
-        Editar Restaurante
-      </button>
-      <button class="action-button delete-button" (click)="deleteRestaurant()">
-        Eliminar Restaurante
-      </button>
-      <button class="action-button manage-menu-button" (click)="onManageMenuClick()">
-        Gestionar Menú
-      </button>
+      <h3 class="section-title">Acciones del Propietario:</h3>
+      <div class="owner-buttons-group">
+        <button class="btn btn-edit" (click)="onEditClick()">
+          Editar Restaurante
+        </button>
+        <button class="btn btn-delete" (click)="deleteRestaurant()">
+          Eliminar Restaurante
+        </button>
+        <button class="btn btn-manage-menu" (click)="onManageMenuClick()">
+          Gestionar Menú
+        </button>
+      </div>
     </div>
   </div>
 
-  <div *ngIf="!restaurant && !isLoading && !errorMessage" class="no-restaurant-found">
+  <div class="message-card info-message no-restaurant-found" *ngIf="!restaurant && !isLoading && !errorMessage">
     <p>No se pudo cargar el restaurante.</p>
   </div>
 </div>
