@@ -57,7 +57,6 @@
 }
 
 .app-main-content {
-  padding-top: 64px; /* CAMBIO CLAVE: Empuja el contenido hacia abajo la altura del header fijo */
   flex-grow: 1;
 }
 

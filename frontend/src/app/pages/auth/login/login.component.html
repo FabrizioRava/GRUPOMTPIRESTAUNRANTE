@@ -13,12 +13,12 @@
 
       <div class="mb-4">
         <label for="email" class="form-label fw-semibold text-dark">Email</label>
-        <input id="email" type="email" class="form-control form-control-lg rounded-pill" [(ngModel)]="email" placeholder="tu_email@ejemplo.com">
+        <input id="email" type="email" class="form-control form-control-lg rounded-pill" [(ngModel)]="email" placeholder="Email">
       </div>
 
       <div class="mb-4">
         <label for="password" class="form-label fw-semibold text-dark">Contraseña</label>
-        <input id="password" type="password" class="form-control form-control-lg rounded-pill" [(ngModel)]="password" placeholder="********">
+        <input id="password" type="password" class="form-control form-control-lg rounded-pill" [(ngModel)]="password" placeholder="Contraseña">
       </div>
 
       <div class="d-grid gap-2 mb-3">
@@ -30,7 +30,7 @@
       </div>
 
       <div class="d-grid">
-        <button (click)="forgotPassword()" class="btn btn-link text-primary fw-semibold text-decoration-none">Olvidé mi contraseña</button>
+        <button (click)="forgotPassword()" class="btn btn-link fw-semibold text-decoration-none forgot-password-link">¿Olvidó su contraseña?</button>
       </div>
     </div>
   </div>

@@ -3,156 +3,176 @@
 /* ---------------------------------------------------- */
 /* Contenedor Principal Global                          */
 /* ---------------------------------------------------- */
+
+
 .main-container {
   min-height: 100vh;
-  background-color: #f0f2f5; /* Fondo general muy claro */
+  background-color: #F8F7FC; /* El fondo general muy claro de la imagen de referencia */
   position: relative;
-  overflow: hidden; /* Crucial para que el SVG se vea correctamente */
-  display: flex; /* Asegura que el contenido se alinee con flexbox */
+  overflow: hidden; /* Importante para que las formas se vean correctamente */
+  display: flex; /* Permite que los hijos se organicen lado a lado */
 }
-
 /* ---------------------------------------------------- */
-/* La Forma Morada con SVG (purple-blob-svg)            */
+/* La Forma Morada (purple-blob-svg) - ¡Ajustes para tu SVG! */
 /* ---------------------------------------------------- */
 .purple-blob-svg {
-  /* Usamos el SVG como imagen de fondo */
-  background-image: url('/assets/purple-shape.svg'); /* ¡Asegúrate de que la ruta sea correcta! */
-  background-size: cover; /* Cubre todo el contenedor */
-  background-repeat: no-repeat;
-  background-position: left center; /* Asegura que esté a la izquierda y centrado verticalmente */
-  
-  width: 70%; /* Le damos un ancho fijo para que la forma se extienda como en la imagen */
-  height: 100%;
+  position: absolute; 
   left: 0;
   top: 0;
-  z-index: 0; /* Asegura que esté en el fondo */
+  height: 100%; /* Ocupa toda la altura del main-container */
   
-  /* Puedes ajustar la transformación si el SVG no se alinea como esperas */
-  /* transform: translateX(-5%); */
+  /* Ajusta el ancho del contenedor. Podría necesitar ser más o menos para que el SVG se posicione correctamente. */
+  /* Si el SVG tiene la forma de ola y quieres que ocupe, por ejemplo, el 50% de la pantalla */
+  /* sin desbordarse, este es el valor clave. Prueba con 50% o 55% */
+  width: 50%; /* O 55% si la ola es más ancha */
+  
+  z-index: 0; 
+/*   
+  background-color: #6A5ACD;  */
+
+  background-image: url('/assets/purple-wave.svg'); /* ¡Verifica que esta ruta sea correcta y el nombre exacto! */
+                                                    /* (Ej. '/assets/mi-ola.svg') */
+  
+  /* background-size: CRUCIAL para escalar el SVG */
+  /* 'cover' puede hacer que el SVG se corte si su relación de aspecto es muy diferente al contenedor. */
+  /* '100% 100%' fuerza al SVG a llenar el div completo, lo que puede distorsionarlo, pero a veces es necesario. */
+  /* 'auto 100%' escala el ancho automáticamente mientras el alto ocupa el 100%. Podría ser lo que necesitas. */
+  background-size: auto 100%; 
+                              /* Si tu SVG es muy ancho, esto podría empujarlo fuera del div. */
+                              /* Si esto no funciona, prueba con `background-size: 100% 100%;` o `background-size: cover;` de nuevo. */
+
+  background-position: left center; 
+  
+  background-repeat: no-repeat; 
 }
+
+/* El resto del CSS, incluyendo el .content-wrapper y las media queries, queda igual */
 
 /* ---------------------------------------------------- */
 /* Contenedor del Título y Formulario (content-wrapper) */
+/* Este es el contenedor que aloja "Bienvenido" y la tarjeta de login. */
 /* ---------------------------------------------------- */
 .content-wrapper {
-  /* Estas propiedades de Bootstrap ya centran el contenido */
-  /* d-flex flex-grow-1 flex-column justify-content-center align-items-center */
-  width: 100%;
-  max-width: 1200px; /* Limita el ancho en pantallas grandes */
-  z-index: 1; /* Para que esté por encima del SVG */
-  padding: 2rem;
+  /* Posicionamiento absoluto para fijarlo a la mitad derecha de la pantalla */
+  position: absolute; 
+  right: 0;           /* Lo pega al borde derecho de la pantalla */
+  width: 50%;         /* Ocupa exactamente la mitad derecha de la pantalla */
+  height: 100%;       /* Ocupa toda la altura */
   
-  /* Alineamos el content-wrapper a la derecha de la pantalla visible */
-  margin-left: auto; /* Empuja el contenedor a la derecha */
-  margin-right: 0; /* Sin margen a la derecha del todo */
+  /* Centramos su contenido (título y formulario) dentro de esta mitad derecha */
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* Centra verticalmente */
+  align-items: center; /* Centra horizontalmente */
   
-  /* Espacio extra para que el formulario no esté pegado al borde derecho */
-  padding-right: 5vw; /* Añade un padding a la derecha, responsive */
+  z-index: 1; /* Asegura que esté por encima de la ola morada */
+  padding: 0; /* Sin padding extra que afecte su tamaño o posición */
 }
 
 /* ---------------------------------------------------- */
-/* Título de Bienvenida (¡Ahora con el color morado correcto y visible!) */
+/* Título de Bienvenida (Bienvenido)                    */
 /* ---------------------------------------------------- */
 .welcome-title-purple {
-  font-size: 3.5rem; /* Tamaño de fuente grande */
-  font-weight: 800; /* Extra negrita */
-  color: #7B6CC9; /* ¡El color morado del diseño! */
-  margin-bottom: 1.5rem; /* Espacio entre el título y la caja de login */
-  text-align: center; /* Centrado respecto a la caja de login */
+  font-size: 3.5rem; 
+  font-weight: 800; 
+  color: #4A4E9E; 
+  margin-bottom: 2rem; 
+  text-align: center; 
   line-height: 1.2;
-  white-space: nowrap; /* Evita que el texto se rompa en varias líneas */
-  
-  /* Ajustar el posicionamiento horizontal del título */
-  /* La imagen muestra que el título no está centrado con el formulario, sino un poco a la izquierda de él */
-  transform: translateX(-15%); /* Mueve el título ligeramente a la izquierda. Ajusta este valor. */
+  white-space: nowrap; 
+  transform: translateX(0%); 
 }
 
 /* ---------------------------------------------------- */
-/* Caja de Login (login-box)                            */
+/* Caja de Login (El rectángulo blanco con el formulario)*/
 /* ---------------------------------------------------- */
 .login-box {
-  background-color: #ffffff;
-  border-radius: 25px; /* Bordes redondeados de la tarjeta */
-  padding: 2.5rem 3.5rem; /* Padding generoso */
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15); /* Sombra pronunciada y difusa */
-  max-width: 450px; /* Ancho máximo para el formulario */
-  width: 100%; /* Asegura que se adapte */
+  background-color: #ffffff; 
+  border-radius: 1.5rem; 
+  padding: 3rem 4rem; 
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.08); 
+  max-width: 450px; 
+  width: 100%; 
 }
 
 /* ---------------------------------------------------- */
-/* Campos de Formulario (inputs)                        */
+/* Campos de Formulario (Email y Contraseña inputs)     */
 /* ---------------------------------------------------- */
 .form-label {
-  font-weight: 600;
-  color: #343a40;
-  font-size: 0.95rem;
-  margin-bottom: 0.4rem;
+  font-weight: 600; 
+  color: #343a40; 
+  font-size: 0.95rem; 
+  margin-bottom: 0.4rem; 
 }
 
 .form-control-lg {
-  height: 3.2rem;
-  padding: 0.75rem 1.2rem;
-  font-size: 1rem;
-  border-radius: 50px; /* ¡Bordes pastilla para los inputs! */
-  border: 1px solid #ced4da;
-  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.05);
+  height: 3.2rem; 
+  padding: 0.75rem 1.2rem; 
+  font-size: 1rem; 
+  border-radius: 0.75rem; 
+  border: 1px solid #E0E0E0; 
+  box-shadow: none; 
+}
+
+.form-control-lg::placeholder {
+  color: #9C9C9C; 
+  opacity: 1; 
 }
 
 .form-control-lg:focus {
-  border-color: #7B6CC9; /* Borde morado al enfocar */
-  box-shadow: 0 0 0 0.25rem rgba(123, 108, 201, 0.25); /* Sombra morada suave al enfocar */
+  border-color: #A0A0A0; 
+  box-shadow: 0 0 0 0.25rem rgba(160, 160, 160, 0.1); 
 }
 
 /* ---------------------------------------------------- */
-/* Botones                                              */
+/* Botones (Ingresar, Registrarse, Olvidé mi contraseña)*/
 /* ---------------------------------------------------- */
 .btn-lg.rounded-pill {
-  height: 3.5rem;
-  font-size: 1.1rem;
-  font-weight: 700;
-  border-radius: 50px; /* Bordes pastilla */
-  transition: all 0.2s ease-in-out;
+  height: 3.5rem; 
+  font-size: 1.1rem; 
+  font-weight: 700; 
+  border-radius: 0.75rem; 
+  transition: all 0.2s ease-in-out; 
+  padding: 0.75rem 1.25rem; 
 }
 
-/* Botón "Ingresar" (Primario) */
 .btn-primary {
-  background-color: #7B6CC9; /* Morado para el botón primario */
-  border-color: #7B6CC9;
+  background-color: #6A5ACD; 
+  border-color: #6A5ACD;
   color: #ffffff;
 }
 
 .btn-primary:hover {
-  background-color: #6A5CA8; /* Morado un poco más oscuro al pasar el mouse */
-  border-color: #6A5CA8;
+  background-color: #5A4CAD; 
+  border-color: #5A4CAD;
 }
 
-/* Botón "Registrarse" (Outline Secundario) */
 .btn-outline-secondary {
-  background-color: transparent;
-  color: #7B6CC9; /* Texto morado */
-  border: 2px solid #7B6CC9; /* Borde morado de 2px, más visible */
+  background-color: #6A5ACD; 
+  border-color: #6A5ACD;
+  color: #ffffff; 
   font-weight: 700;
 }
 
 .btn-outline-secondary:hover {
-  background-color: #7B6CC9;
+  background-color: #5A4CAD; 
   color: #ffffff;
-  border-color: #7B6CC9;
+  border-color: #5A4CAD;
 }
 
-/* Botón "Olvidé mi contraseña" (Link) */
-.btn-link {
-  color: #7B6CC9; /* Morado */
+.forgot-password-link { 
+  color: #6A5ACD; 
   font-weight: 600;
-  text-decoration: none;
+  text-decoration: none; 
+  font-size: 0.95rem; 
 }
 
-.btn-link:hover {
-  text-decoration: underline;
+.forgot-password-link:hover {
+  text-decoration: underline; 
 }
 
 /* ---------------------------------------------------- */
-/* Mensajes de Alerta                                   */
+/* Mensajes de Alerta (si se usan)                      */
 /* ---------------------------------------------------- */
 .alert {
   border-radius: 0.5rem;
@@ -163,47 +183,64 @@
 /* ---------------------------------------------------- */
 /* Ajustes Responsivos (para Mobile y Tablet)           */
 /* ---------------------------------------------------- */
-@media (max-width: 991.98px) { /* Tablets y pantallas más pequeñas */
+@media (max-width: 991.98px) { /* Para tablets y pantallas medianas */
   .main-container {
     flex-direction: column; /* Apila los elementos verticalmente */
-    justify-content: flex-start; /* Alinea al inicio en el eje principal */
+    justify-content: flex-start; /* Alinea los elementos apilados al inicio */
     align-items: center; /* Centra horizontalmente los elementos apilados */
+    background-color: #F8F7FC; /* Mantiene el fondo claro */
   }
 
   .purple-blob-svg {
-    /* En mobile, podemos hacer la forma morada más pequeña y posicionarla diferente */
-    width: 100vw;
-    height: 100vw; /* Para que sea circular */
-    background-size: cover; /* Ajusta la imagen SVG */
-    background-position: center bottom; /* Posiciona en el centro y abajo */
-    border-radius: 0 0 50% 50%; /* Media luna inferior para que la parte superior sea curva */
-    transform: translateY(-50%) translateX(0%); /* Sube la burbuja a la mitad y centra horizontalmente */
-    top: 0;
-    left: 0;
-    position: relative; /* Para que fluya en el documento */
+    /* Resetea los estilos de posicionamiento y tamaño de desktop para mobile */
+    position: relative; /* Lo hace fluir con el documento */
+    width: 100vw;       /* Ocupa todo el ancho de la ventana */
+    height: 35vh;       /* Ocupa una porción de la altura para la barra superior */
+    left: 0; top: 0;    /* Reinicia el posicionamiento */
+    transform: none;    /* Elimina cualquier transformación */
+    
+    /* Configuración del SVG para mobile */
+    background-image: url('/assets/purple-wave.svg'); /* Puedes usar el mismo SVG o uno específico para mobile */
+    background-size: cover;
+    background-position: center bottom; /* Posiciona en la parte inferior de la barra */
+    background-color: #6A5ACD; /* Color de fallback para mobile */
+    border-radius: 0 0 50% 50%; /* Si quieres que la barra tenga bordes inferiores redondeados en mobile */
   }
-  
+
   .content-wrapper {
-    padding-top: 1rem;
+    /* Resetea los estilos de posicionamiento y tamaño de desktop para mobile */
+    position: relative; /* Lo hace fluir con el documento */
+    width: 100%;        /* Ocupa todo el ancho disponible */
+    height: auto;       /* Altura automática para el contenido apilado */
+    right: auto;        /* Reinicia la posición a la derecha */
+    left: auto;         /* Reinicia la posición a la izquierda */
+    
+    /* Vuelve a aplicar flex para el centrado del contenido en mobile */
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start; /* Alinea al inicio, o puedes usar center */
+    align-items: center;
+    
+    margin: 0 auto; /* Centra el wrapper horizontalmente */
+    margin-top: 15vh; /* Ajusta este valor para la superposición del formulario sobre la barra morada */
+    padding-top: 2rem;
     padding-bottom: 2rem;
-    margin: 0 auto;
-    padding-right: 1rem; /* Ajuste el padding para mobile */
-    padding-left: 1rem;
+    z-index: 2; /* Sigue estando por encima de la forma morada */
   }
 
   .welcome-title-purple {
-    font-size: 2.5rem;
-    margin-bottom: 1rem;
-    transform: translateX(0%); /* Quita la transformación en mobile */
-    margin-top: 50px; /* Dale espacio desde arriba de la burbuja */
+    font-size: 2.5rem; 
+    margin-bottom: 1.5rem;
+    transform: translateX(0%);
+    color: #4A4E9E; 
   }
 
   .login-box {
-    margin-top: -80px; /* Superpone el login box sobre la burbuja morada */
+    margin-top: 0; 
     border-radius: 1.5rem;
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.08);
     padding: 2rem 1.5rem;
-    max-width: 90%;
+    max-width: 90%; 
   }
 
   .form-control-lg, .btn-lg.rounded-pill {
@@ -213,16 +250,17 @@
   }
 }
 
-@media (max-width: 575.98px) { /* Extra small devices (portrait phones) */
+@media (max-width: 575.98px) { /* Para pantallas muy pequeñas (celulares) */
   .purple-blob-svg {
-    height: 80vw; /* Más pequeña la burbuja en pantallas muy chicas */
-    transform: translateY(-60%) translateX(0%);
+    height: 30vh; 
+  }
+  .content-wrapper {
+    margin-top: 10vh; 
   }
   .welcome-title-purple {
     font-size: 2rem;
   }
   .login-box {
-    margin-top: -60px; /* Ajuste de superposición para pantallas pequeñas */
     padding: 1.5rem 1rem;
   }
 }
