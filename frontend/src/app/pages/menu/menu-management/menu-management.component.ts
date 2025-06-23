@@ -1,8 +1,7 @@
-// src/app/menu/menu-management/menu-management.component.ts
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
-import { ActivatedRoute, Router, RouterLink } from '@angular/router'; // Importar RouterLink
+import { ActivatedRoute, Router, RouterLink } from '@angular/router'; 
 import { MenuService, MenuItem } from '../../../services/menu.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { LoadingSpinnerComponent } from '../../../shared/loading-spinner/loading-spinner.component';
@@ -15,7 +14,7 @@ import { AuthService } from '../../../services/auth.service';
     CommonModule,
     ReactiveFormsModule,
     LoadingSpinnerComponent,
-    RouterLink // ¡Importante para [routerLink] en el HTML!
+    RouterLink 
   ],
   templateUrl: './menu-management.component.html',
   styleUrls: ['./menu-management.component.css']
@@ -23,40 +22,37 @@ import { AuthService } from '../../../services/auth.service';
 export class MenuManagementComponent implements OnInit {
   menuForm: FormGroup;
   restaurantId: number | null = null;
-  menuItems: MenuItem[] = []; // Para mostrar los menús existentes
+  menuItems: MenuItem[] = [];
   errorMessage: string | null = null;
   isLoading: boolean = false;
-  isSubmitting: boolean = false; // Para controlar el estado del formulario al enviar
+  isSubmitting: boolean = false; 
 
   constructor(
     private fb: FormBuilder,
-    private route: ActivatedRoute, // Para obtener el ID del restaurante de la URL
+    private route: ActivatedRoute, 
     private router: Router,
     private menuService: MenuService,
     private authService: AuthService
   ) {
-    // Inicializar el formulario con validadores
     this.menuForm = this.fb.group({
       name: ['', Validators.required],
       description: ['', Validators.required],
-      price: ['', [Validators.required, Validators.min(0.01)]], // Precio debe ser > 0
-      imageUrl: ['', [Validators.required, Validators.pattern('https?://.+')]], // Validar formato URL
-      category: [''] // Opcional, puede ser cadena vacía
+      price: ['', [Validators.required, Validators.min(0.01)]], 
+      imageUrl: ['', [Validators.required, Validators.pattern('https?://.+')]], 
+      category: [''] 
     });
   }
 
   ngOnInit(): void {
-    // Obtener el restaurantId de los parámetros de la URL
-    // Ya no es .parent?.params porque la ruta es de nivel superior: /restaurants/:restaurantId/menus
     this.route.params.subscribe(params => {
-      const id = +params['restaurantId']; // El nombre del parámetro es 'restaurantId'
+      const id = +params['restaurantId']; 
       if (isNaN(id)) {
         this.errorMessage = 'ID de restaurante inválido. Redirigiendo...';
-        this.router.navigate(['/restaurants']); // Redirigir si el ID es inválido
+        this.router.navigate(['/restaurants']); 
         return;
       }
       this.restaurantId = id;
-      this.loadMenuItems(this.restaurantId); // Cargar menús existentes para este restaurante
+      this.loadMenuItems(this.restaurantId); 
     });
   }
 
@@ -75,8 +71,7 @@ export class MenuManagementComponent implements OnInit {
         console.error('Error cargando menús para gestión:', err);
         if (err.status === 401 || err.status === 403) {
           this.errorMessage = 'No autorizado para ver este menú o sesión expirada.';
-          // Opcional: redirigir al login si es un error de autenticación/autorización
-          this.authService.logout(); // O solo router.navigate(['/login']);
+          this.authService.logout(); 
         }
       }
     });
@@ -94,10 +89,9 @@ export class MenuManagementComponent implements OnInit {
 
       const newMenuItem: MenuItem = {
         ...this.menuForm.value,
-        restaurantId: this.restaurantId // Asignar el ID del restaurante obtenido de la URL
+        restaurantId: this.restaurantId 
       };
 
-      // Limpia la categoría si es una cadena vacía antes de enviar (el backend espera null)
       if (newMenuItem.category === '') {
         newMenuItem.category = null;
       }
@@ -105,9 +99,9 @@ export class MenuManagementComponent implements OnInit {
       this.menuService.createMenuItem(newMenuItem).subscribe({
         next: (item) => {
           console.log('MenuManagementComponent: Ítem de menú creado con éxito:', item);
-          this.menuItems.push(item); // Añadir el nuevo ítem a la lista local
-          this.menuForm.reset(); // Limpiar el formulario
-          this.menuForm.get('price')?.setValue(''); // Asegurarse de que el campo de precio se limpie correctamente
+          this.menuItems.push(item); 
+          this.menuForm.reset(); 
+          this.menuForm.get('price')?.setValue(''); 
           this.isSubmitting = false;
         },
         error: (err: HttpErrorResponse) => {
@@ -115,7 +109,6 @@ export class MenuManagementComponent implements OnInit {
           this.isSubmitting = false;
           console.error('Error creando ítem de menú:', err);
           if (err.status === 400 && err.error?.message) {
-            // Si el backend envía un mensaje de error de validación específico
             this.errorMessage += `: ${err.error.message}`;
           } else if (err.status === 401 || err.status === 403) {
              this.errorMessage = 'No autorizado para crear ítems de menú o sesión expirada.';
@@ -125,23 +118,18 @@ export class MenuManagementComponent implements OnInit {
       });
     } else {
       this.errorMessage = 'Por favor, completa todos los campos requeridos correctamente.';
-      // Opcional: Marcar todos los campos como "touched" para mostrar errores de validación inmediatamente
       this.menuForm.markAllAsTouched();
     }
   }
 
-  // --- Getters para facilitar la validación en el HTML ---
   get name() { return this.menuForm.get('name'); }
   get description() { return this.menuForm.get('description'); }
   get price() { return this.menuForm.get('price'); }
   get imageUrl() { return this.menuForm.get('imageUrl'); }
   get category() { return this.menuForm.get('category'); }
 
-  // Métodos placeholder para editar y eliminar
   editMenuItem(item: MenuItem): void {
     console.log('Editar ítem:', item);
-    // TODO: Implementar lógica para cargar el ítem en el formulario para edición
-    // o abrir un modal/nueva vista para editar.
   }
 
   deleteMenuItem(itemId: number | undefined): void {
@@ -154,9 +142,9 @@ export class MenuManagementComponent implements OnInit {
       this.menuService.deleteMenuItem(itemId).subscribe({
         next: () => {
           console.log('MenuManagementComponent: Ítem de menú eliminado:', itemId);
-          this.menuItems = this.menuItems.filter(item => item.id !== itemId); // Eliminar de la lista local
-          this.errorMessage = 'Ítem de menú eliminado con éxito.'; // Mensaje de éxito temporal
-          setTimeout(() => this.errorMessage = null, 3000); // Borrar mensaje después de 3 segundos
+          this.menuItems = this.menuItems.filter(item => item.id !== itemId); 
+          this.errorMessage = 'Ítem de menú eliminado con éxito.'; 
+          setTimeout(() => this.errorMessage = null, 3000); 
         },
         error: (err: HttpErrorResponse) => {
           this.errorMessage = 'Error al eliminar el ítem del menú. Por favor, intenta de nuevo.';

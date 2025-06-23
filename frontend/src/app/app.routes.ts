@@ -1,10 +1,9 @@
-// src/app/app.routes.ts
 import { Routes } from '@angular/router';
 import { authGuard } from './guards/auth.guard';
-import { noAuthGuard } from './guards/no-auth.guard'; // Sigue importándolo
+import { noAuthGuard } from './guards/no-auth.guard'; 
 
 export const routes: Routes = [
-  { path: '', redirectTo: '/auth/login', pathMatch: 'full' }, // Asegúrate que esta es la primera línea
+  { path: '', redirectTo: '/auth/login', pathMatch: 'full' }, 
 
   {
     path: 'auth',

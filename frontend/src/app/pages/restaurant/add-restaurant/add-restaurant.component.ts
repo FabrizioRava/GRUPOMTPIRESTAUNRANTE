@@ -152,8 +152,6 @@ export class AddRestaurantComponent implements OnInit, OnDestroy, AfterViewInit 
           this.onLocationSelected({
   lat: lat,
   lng: lng,
-  // Aquí debes pasar el zoom. Puedes usar un valor por defecto o el initialZoom del picker
-  // Si el mapa ya estaba inicializado, podrías intentar obtener el zoom actual del picker
   zoom: this.locationPicker?.map?.getZoom() || 13, 
   georefAddress: georefAddressForEvent,
   fullGeorefResponse: undefined
@@ -288,14 +286,12 @@ setupFormListeners(): void {
       ).subscribe((municipalityId: string | null) => {
         const municipality = municipalityId ? this.filteredMunicipalities.find(m => m.id === municipalityId) : null;
 
-        // NUEVOS LOGS PARA EL FRONTEND
         console.log('[Frontend] Ciudad/Localidad seleccionada (objeto completo):', municipality);
         if (municipality) {
             console.log('[Frontend] ID de la localidad seleccionada:', municipality.id);
             console.log('[Frontend] Nombre de la localidad seleccionada:', municipality.nombre);
             console.log('[Frontend] Centroide de la localidad seleccionada:', municipality.centroide);
         }
-        // FIN NUEVOS LOGS
 
         if (municipality && municipality.centroide && this.locationPicker) {
           console.log('[Frontend] Centroide EXISTE y locationPicker está disponible. Intentando centrar mapa...');

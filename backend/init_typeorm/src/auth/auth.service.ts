@@ -1,10 +1,8 @@
-// backend/src/auth/auth.service.ts
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 
-// Define la interfaz para el usuario interno
 interface InternalUser {
-  userId: number; // <-- Vuelve a ser NUMBER
+  userId: number; // 
   email: string;
   password?: string;
   cityId: number;
@@ -12,13 +10,19 @@ interface InternalUser {
 
 @Injectable()
 export class AuthService {
-  // Array de usuarios de ejemplo
   private readonly users: InternalUser[] = [
     {
-      userId: 1, // <-- Vuelve a ser un número como ID
+      userId: 1, 
       email: 'test@example.com',
       password: 'password123',
       cityId: 140357,
+    },
+
+    {
+      userId: 2, 
+      email: 'test2@example.com',
+      password: 'password123',
+      cityId: 100213,
     },
   ];
 
@@ -35,10 +39,10 @@ export class AuthService {
     return null;
   }
 
-  async login(user: any) { // 'user' aquí es el objeto que devuelve validateUser (con userId como number, email, y cityId)
+  async login(user: any) { 
     const payload = {
       email: user.email,
-      sub: user.userId, // 'sub' (subject) ahora es un número
+      sub: user.userId, 
       cityId: user.cityId
     };
     return {

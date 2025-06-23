@@ -14,14 +14,14 @@ export interface GeorefProvince extends GeorefEntityRef {
 }
 
 export interface GeorefMunicipality extends GeorefEntityRef {
-  categoria?: string; // Hacemos 'categoria' OPCIONAL
-  centroide?: Centroide; // Hacemos 'centroide' OPCIONAL
+  categoria?: string; 
+  centroide?: Centroide; 
   provincia: GeorefEntityRef;
 }
 
 export interface GeorefLocalidad extends GeorefEntityRef {
-  categoria?: string; // Hacemos 'categoria' OPCIONAL
-  centroide?: Centroide; // Hacemos 'centroide' OPCIONAL
+  categoria?: string; 
+  centroide?: Centroide; 
   provincia: GeorefEntityRef;
   departamento?: GeorefEntityRef;
   municipio?: GeorefEntityRef;

@@ -1,19 +1,12 @@
-// src/app.module.ts
 import { Module, OnModuleInit } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-
-// Importación del GeorefModule
 import { GeorefModule } from './georef/georef.module'; 
-
-// [AÑADIDO] Importar tus módulos de entidades y servicios de base de datos
-// Asegúrate de que estas rutas son correctas para tu proyecto
 import { RestaurantModule } from './restaurant/restaurant.module'; 
 import { MenuModule } from './menu/menu.module'; 
-// Si tienes otros módulos que interactúan con la base de datos, impórtalos aquí también
-import { AuthModule } from './auth/auth.module'; // Importar AuthModule si maneja usuarios de DB
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -32,16 +25,14 @@ import { AuthModule } from './auth/auth.module'; // Importar AuthModule si manej
         password: configService.get<string>('DB_PASSWORD'),
         database: configService.get<string>('DB_DATABASE'),
         entities: [__dirname + '/**/*.entity{.ts,.js}'],
-        synchronize: true, // Usar solo para desarrollo, NO en producción
+        synchronize: true, 
         logging: true,
       }),
     }),
-    // Incluye el GeorefModule
     GeorefModule, 
-    // [AÑADIDO] Importa los módulos que usan TypeORM para tus entidades
     RestaurantModule, 
     MenuModule,
-    AuthModule, // Si el AuthModule también tiene entidades o repositorios de DB
+    AuthModule, 
   ],
   controllers: [AppController],
   providers: [AppService],

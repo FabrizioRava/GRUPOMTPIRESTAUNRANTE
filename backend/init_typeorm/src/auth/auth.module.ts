@@ -1,4 +1,3 @@
-    // src/auth/auth.module.ts
     import { Module } from '@nestjs/common';
     import { JwtModule } from '@nestjs/jwt';
     import { PassportModule } from '@nestjs/passport';
@@ -11,7 +10,7 @@
       imports: [
         PassportModule,
         JwtModule.register({
-          secret: 'esteEsMiTokenSecreto123', // ¡Asegúrate que sea EXACTAMENTE este string!
+          secret: 'esteEsMiTokenSecreto123', 
           signOptions: { expiresIn: '1h' },
         }),
       ],

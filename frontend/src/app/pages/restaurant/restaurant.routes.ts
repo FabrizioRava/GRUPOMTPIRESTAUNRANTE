@@ -1,23 +1,23 @@
 import { Routes } from '@angular/router';
 import { RestaurantListComponent } from './restaurant-list/restaurant-list.component';
 import { RestaurantDetailComponent } from './restaurant-detail/restaurant-detail.component';
-import { AddRestaurantComponent } from './add-restaurant/add-restaurant.component'; // Assuming you moved it here
+import { AddRestaurantComponent } from './add-restaurant/add-restaurant.component'; 
 
 export const RESTAURANT_ROUTES: Routes = [
   {
-    path: '', // For /restaurants
+    path: '', 
     component: RestaurantListComponent
   },
   {
-    path: 'add', // <-- Mueve 'add' PRIMERO, antes de ':id'
+    path: 'add', 
     component: AddRestaurantComponent
   },
   {
-    path: 'edit/:id', // <-- Mueve 'edit/:id' también antes de ':id'
+    path: 'edit/:id', 
     component: AddRestaurantComponent
   },
   {
-    path: ':id', // <-- Este debe ir ÚLTIMO entre las rutas de un solo segmento
+    path: ':id', 
     component: RestaurantDetailComponent
   }
 ];

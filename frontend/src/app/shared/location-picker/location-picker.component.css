@@ -1,41 +1,11 @@
-/* src/app/shared/location-picker/location-picker.component.css */
-
-/* ELIMINAR: @import '~leaflet/dist/leaflet.css'; */
-/* Esta línea es correcta que esté eliminada si ya se importa en angular.json. */
-
-/*
- * Estilos para el contenedor principal del mapa (#map).
- * Estos estilos aseguran que el mapa rellene el espacio que le asigne su contenedor padre.
- */
 #map {
-    /*
-     * 'height: 100%' y 'width: 100%' son cruciales aquí.
-     * Hacen que el mapa Leaflet ocupe el 100% del ancho y alto de su elemento padre HTML.
-     * El "cuadrado" o "rectangular" del mapa se define mayormente por el DIV padre en 'add-restaurant.component.html'.
-     */
     height: 100%;
     width: 100%;
-
-    /*
-     * 'min-height' asegura que el mapa siempre tenga una altura mínima,
-     * lo cual es útil en pantallas pequeñas o cuando el contenido del padre es limitado.
-     * Si el 'aspect-square' del padre hace que la altura sea menor que 400px (por ejemplo, en un móvil muy estrecho),
-     * este 'min-height' se activará.
-     */
     min-height: 400px;
-
-    /*
-     * Estas propiedades son buenas para la estética general del mapa.
-     * Puedes ajustarlas o eliminarlas si tu HTML ya las define (ej. con clases de Tailwind).
-     */
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0,0,0,0.1);
 }
 
-/*
- * Estilos de Leaflet para asegurar la visibilidad de los elementos del mapa.
- * Son necesarios para solucionar posibles problemas de renderizado con frameworks como Angular.
- */
 .leaflet-pane,
 .leaflet-tile,
 .leaflet-marker-icon,
@@ -49,11 +19,6 @@
   visibility: inherit;
 }
 
-/*
- * Rutas de las imágenes de Leaflet para los marcadores.
- * Esto es importante para que los íconos de los marcadores del mapa se carguen correctamente.
- * Se asume que tus íconos de Leaflet están en la carpeta 'assets/leaflet/'.
- */
 .leaflet-default-icon-path {
   background-image: url('/assets/leaflet/marker-icon.png');
 }

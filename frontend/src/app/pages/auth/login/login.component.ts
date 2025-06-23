@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
-import { FormsModule } from '@angular/forms'; // Necesario para [(ngModel)]
+import { FormsModule } from '@angular/forms'; 
 import { Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 
 import { LoadingSpinnerComponent } from '../../../shared/loading-spinner/loading-spinner.component';
-import { AuthService } from '../../../services/auth.service'; // Ruta verificada
+import { AuthService } from '../../../services/auth.service'; 
 
 @Component({
   selector: 'app-login',
@@ -47,8 +47,6 @@ export class LoginComponent {
         this.isLoading = false;
         this.userMessage = '¡Inicio de sesión exitoso! Redirigiendo...';
         this.isError = false;
-        // La redirección principal debería ser manejada por los guards.
-        // Se mantiene esta línea como un fallback o para depuración.
         this.router.navigate(['/restaurants']); 
       },
       error: (err) => {
@@ -68,7 +66,5 @@ export class LoginComponent {
     this.userMessage = 'Te redirigiremos a la página de recuperación de contraseña.';
     this.isError = false;
     console.log('Ir a recuperación de contraseña');
-    // Implementar navegación a ruta de recuperación de contraseña aquí
-    // this.router.navigate(['/forgot-password']); 
   }
 }

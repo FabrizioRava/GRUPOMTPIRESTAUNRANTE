@@ -1,5 +1,4 @@
-// src/app/core/sidebar/sidebar.component.ts
-import { Component, OnInit, Output, EventEmitter, OnDestroy, Input } from '@angular/core'; // <-- Importa 'Input'
+import { Component, OnInit, Output, EventEmitter, OnDestroy, Input } from '@angular/core'; 
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { CommonModule } from '@angular/common';
@@ -15,7 +14,7 @@ import { CommonModule } from '@angular/common';
 })
 export class SidebarComponent implements OnInit, OnDestroy {
   @Output() closeSidebar = new EventEmitter<void>();
-  @Input() isOpen: boolean = false; // <-- ¡AQUÍ ESTÁ LA CORRECCIÓN! Declaramos isOpen como Input
+  @Input() isOpen: boolean = false; 
   isAuthenticated: boolean = false;
 
   constructor(private router: Router, private authService: AuthService) {}
@@ -25,8 +24,6 @@ export class SidebarComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    // Si tuvieras suscripciones que limpiar, descomenta y asegúrate de que 'authStatusSubscription' esté definido
-    // this.authStatusSubscription?.unsubscribe();
   }
 
   onCloseClick(): void {

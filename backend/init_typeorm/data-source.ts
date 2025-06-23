@@ -15,17 +15,12 @@ const AppDataSource = new DataSource({
   username: process.env.DB_USERNAME,
   password: process.env.DB_PASSWORD,
   database: process.env.DB_NAME,
-
-  // ✅ Usá directamente las clases
   entities: [Restaurant, Menu],
-
-  // ⚠️ Asegurate de apuntar a dist para las migraciones compiladas
   migrations: ['dist/src/migrations/*.js'],
   synchronize: false,
   logging: true,
 });
 
-// 🔥 Esto fuerza a que TypeScript compile estos archivos
 console.log([Restaurant, Menu]);
 
 export default AppDataSource;

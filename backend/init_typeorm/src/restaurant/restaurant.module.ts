@@ -7,11 +7,11 @@ import { MenuModule } from '../menu/menu.module';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Restaurant]), // Corregido: forFeature en lugar de forEachure
+    TypeOrmModule.forFeature([Restaurant]), 
     MenuModule,
   ],
   controllers: [RestaurantController],
   providers: [RestaurantService],
-  exports: [TypeOrmModule.forFeature([Restaurant])] // Corregido: paréntesis de cierre
+  exports: [TypeOrmModule.forFeature([Restaurant])] 
 })
 export class RestaurantModule {}

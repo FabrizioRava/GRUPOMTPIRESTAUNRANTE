@@ -10,7 +10,7 @@
     "sourceMap": true,
     "outDir": "./dist",
     "baseUrl": "./",
-    "rootDir": "./", // <-- ¡AGREGA ESTA LÍNEA!
+    "rootDir": "./",
     "incremental": true,
     "skipLibCheck": true,
     "strictNullChecks": true,
@@ -19,6 +19,6 @@
     "strictBindCallApply": false,
     "noFallthroughCasesInSwitch": false
   },
-  "include": ["src/**/*"], // <-- ¡AGREGA ESTA LÍNEA (al mismo nivel que "compilerOptions")!
-  "exclude": ["node_modules", "dist"] // <-- ¡PUEDES AGREGAR ESTA TAMBIÉN SI NO LA TIENES!
+  "include": ["src/**/*"], 
+  "exclude": ["node_modules", "dist"] 
 }

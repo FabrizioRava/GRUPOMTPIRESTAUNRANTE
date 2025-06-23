@@ -141,7 +141,6 @@ export class GeorefService {
         }));
         this.logger.debug(`[GeorefService Backend] Localidades fetched and mapped: ${result.length} items for provinciaId: ${provinciaId}.`);
 
-        // NUEVO LOG PARA VERIFICAR CENTROIDES EN EL BACKEND
         result.forEach(loc => {
             if (loc.centroide) {
                 this.logger.debug(`  - Localidad: ${loc.nombre}, Centroide: Lat ${loc.centroide.lat}, Lon ${loc.centroide.lon}`);
@@ -149,7 +148,6 @@ export class GeorefService {
                 this.logger.warn(`  - Localidad: ${loc.nombre}, SIN CENTROIDE`);
             }
         });
-        // FIN NUEVO LOG
 
         if (this.cachedLocalidadesAsMunicipalities) {
             this.cachedLocalidadesAsMunicipalities = [

@@ -1,8 +1,5 @@
- /* src/app/shared/loading-spinner/loading-spinner.component.css */
-    /* Puedes añadir estilos aquí para personalizar el spinner si lo deseas */
-    /* Por ejemplo, para centrarlo o ajustar su tamaño */
     .spinner-border {
-      width: 3rem; /* Tamaño más grande */
+      width: 3rem; 
       height: 3rem;
-      margin-right: 1rem; /* Espacio a la derecha si está junto a un texto */
+      margin-right: 1rem;
     }

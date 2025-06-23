@@ -4,14 +4,12 @@ import { MenuManagementComponent } from './menu-management/menu-management.compo
 
 export const MENU_ROUTES: Routes = [
   {
-    path: '', // Esto hace que /menus cargue MenuListComponent
+    path: '', 
     component: MenuListComponent
   },
   {
-    path: 'manage/:restaurantId', // Esto hace que /menus/manage/:restaurantId cargue MenuManagementComponent
-    // Cambié 'restaurants/:restaurantId/menus' por '/menus/manage/:restaurantId'
-    // ya que ahora está anidado bajo '/menus'.
+    path: 'manage/:restaurantId', 
     component: MenuManagementComponent,
-    data: { isOwnerOnly: true } // Mantienes tu data
+    data: { isOwnerOnly: true } 
   }
 ];

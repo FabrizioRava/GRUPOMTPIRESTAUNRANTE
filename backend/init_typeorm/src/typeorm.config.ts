@@ -13,20 +13,18 @@ const dataSourceOptions: DataSourceOptions = {
   username: process.env.DB_USERNAME,
   password: process.env.DB_PASSWORD,
   database: process.env.DB_NAME,
-  entities: [__dirname + '/**/*.entity{.ts,.js}'], // Mejor patrón para incluir todas las entidades
-  synchronize: false, // IMPORTANTE: Nunca usar true en producción
-  logging: true, // Habilita logs para depuración
-  migrationsRun: true, // Ejecuta migraciones automáticamente al iniciar
+  entities: [__dirname + '/**/*.entity{.ts,.js}'], 
+  synchronize: false, 
+  logging: true, 
+  migrationsRun: true, 
   migrationsTableName: 'migrations_history',
   migrations: [__dirname + '/migrations/*{.ts,.js}'],
-  // Configuración SSL esencial para Supabase
   ssl: true,
   extra: {
     ssl: {
       rejectUnauthorized: false
     }
   },
-  // Opciones adicionales recomendadas
   poolSize: 10,
   connectTimeoutMS: 3000,
   applicationName: 'your-app-name'
@@ -34,7 +32,6 @@ const dataSourceOptions: DataSourceOptions = {
 
 const dataSource = new DataSource(dataSourceOptions);
 
-// Prueba la conexión al inicializar (opcional pero útil)
 dataSource.initialize()
   .then(() => console.log('Conexión a la base de datos establecida'))
   .catch(error => console.error('Error de conexión:', error));

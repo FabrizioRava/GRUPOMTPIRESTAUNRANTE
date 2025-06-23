@@ -1,47 +1,36 @@
-/* src/app/auth/register/register.component.css */
-/* La importación de fuentes DEBE ir en src/styles.css */
-
-/* Personalización de variables CSS de Bootstrap */
 :root {
-  --bs-primary-subtle: #746fba; /* Tu color principal */
-  --bs-light-subtle: #efefef; /* El color de fondo del body */
-  --bs-font-sans-serif: 'Inter', sans-serif; /* Fuente por defecto */
+  --bs-primary-subtle: #746fba; 
+  --bs-light-subtle: #efefef; 
+  --bs-font-sans-serif: 'Inter', sans-serif; 
 }
 
-/* Estilos para el contenedor principal que usa flexbox para centrar */
 .min-vh-100 {
   min-height: 100vh;
 }
 
-/* Estilos para la tarjeta de registro */
 .register-container {
-  max-width: 450px; /* Ancho máximo para el formulario */
-  width: 100%; /* Ocupa todo el ancho disponible hasta el max-width */
+  max-width: 450px; 
+  width: 100%; 
 }
 
-/* Estilos para el título del formulario */
 .register-title {
   font-family: var(--bs-font-sans-serif);
   font-weight: 700;
-  font-size: 28px; /* Ajuste el tamaño de la fuente para que se vea bien */
+  font-size: 28px; 
   line-height: 36px;
   color: var(--bs-primary-subtle);
 }
 
-/* Estilos para el spinner de carga dentro del botón */
-/* NOTA: Asegúrate de que tu componente app-loading-spinner tenga estilos para ser visible */
-/* Por ejemplo, puede ser un simple texto "Cargando..." o un ícono giratorio */
 button .spinner-border {
   width: 1.5rem;
   height: 1.5rem;
   margin-right: 0.5rem;
 }
 
-/* Ajustes de responsividad si son necesarios y no cubiertos por Bootstrap */
-@media (max-width: 575.98px) { /* Extra small devices (phones, 480px and down) */
+@media (max-width: 575.98px) { 
   .register-container {
-    padding: 20px; /* Reduce el padding en pantallas muy pequeñas */
-    border-radius: 12px; /* Ligeramente menos redondeado */
+    padding: 20px; 
+    border-radius: 12px; 
   }
 
   .register-title {

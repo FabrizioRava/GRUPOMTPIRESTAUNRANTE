@@ -1,35 +1,31 @@
-// src/app/services/menu.service.ts
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
-import { environment } from '../../environments/environment'; // Importar environment
-import { AuthService } from './auth.service'; // Importar AuthService
+import { environment } from '../../environments/environment'; 
+import { AuthService } from './auth.service'; 
 
-// Interfaz que debe coincidir con CreateMenuDto/Menu Entity del backend
 export interface MenuItem {
-  id?: number; // Opcional para la creación
+  id?: number; 
   restaurantId: number;
   name: string;
   description: string;
   price: number;
   imageUrl: string;
-  category?: string | null; // Añadido, es opcional y puede ser null
+  category?: string | null; 
 }
 
 @Injectable({
   providedIn: 'root'
 })
 export class MenuService {
-  // Asegúrate que esta URL base apunte a tu backend
-  private apiUrl = `${environment.backendUrl}/menu`; // Usar environment.backendUrl
+  private apiUrl = `${environment.backendUrl}/menu`; 
 
   constructor(
     private http: HttpClient,
-    private authService: AuthService // Inyectar AuthService
+    private authService: AuthService 
   ) {}
 
-  // Manejo de errores
   private handleError(error: HttpErrorResponse) {
     let errorMessage = 'Error desconocido en el servicio de menús.';
     if (error.error instanceof ErrorEvent) {
@@ -41,7 +37,6 @@ export class MenuService {
     return throwError(() => new Error(errorMessage));
   }
 
-  // Método para obtener las cabeceras de autenticación
   private getAuthHeaders(): HttpHeaders {
     const token = this.authService.getToken();
     let headers = new HttpHeaders({
@@ -56,7 +51,6 @@ export class MenuService {
   }
 
   getAllMenuItems(): Observable<MenuItem[]> {
-    // Los GET no requieren token si no están protegidos, pero es buena práctica incluirlos
     return this.http.get<MenuItem[]>(this.apiUrl, { headers: this.getAuthHeaders() }).pipe(
       catchError(this.handleError)
     );
@@ -75,7 +69,6 @@ export class MenuService {
   }
 
   createMenuItem(menuItem: MenuItem): Observable<MenuItem> {
-    // Las operaciones de creación, actualización y eliminación requieren autenticación
     return this.http.post<MenuItem>(this.apiUrl, menuItem, { headers: this.getAuthHeaders() }).pipe(
       catchError(this.handleError)
     );

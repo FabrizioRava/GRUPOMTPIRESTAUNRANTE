@@ -18,7 +18,7 @@ export interface GeorefAddressDetailsFromPicker {
 export interface LocationSelectedEvent {
   lat: number;
   lng: number;
-  zoom: number; // Agregamos la propiedad zoom aquí
+  zoom: number; 
   georefAddress?: GeorefAddressDetailsFromPicker;
   fullGeorefResponse?: GeorefDireccion;
 }
@@ -44,7 +44,6 @@ export class LocationPickerComponent implements OnInit, OnDestroy, AfterViewInit
   public currentMarker?: L.Marker;
   public isMapReady = false;
 
-  // Propiedad para almacenar el zoom actual del mapa
   private currentMapZoom: number = this.initialZoom;
 
   constructor(private georefService: GeorefService) { }
@@ -65,8 +64,6 @@ export class LocationPickerComponent implements OnInit, OnDestroy, AfterViewInit
   }
 
   ngAfterViewInit(): void {
-    // Inicializamos el mapa solo si no está listo
-    // Damos un pequeño respiro para que el DOM se asiente
     setTimeout(() => {
       if (!this.map) {
         this.initializeMap();
@@ -79,14 +76,13 @@ export class LocationPickerComponent implements OnInit, OnDestroy, AfterViewInit
   }
 
   private initializeMap(): void {
-    // Solo inicializa el mapa si no existe
     if (this.mapContainer && this.mapContainer.nativeElement && !this.map) {
       const lat = this.initialLat ?? -34.6037;
       const lng = this.initialLng ?? -58.3816;
 
       this.map = L.map(this.mapContainer.nativeElement).setView(
         [lat, lng],
-        this.initialZoom // Usamos el initialZoom en la primera carga
+        this.initialZoom 
       );
 
       L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -102,7 +98,7 @@ export class LocationPickerComponent implements OnInit, OnDestroy, AfterViewInit
       }
 
       this.setupMapClickHandler();
-      this.setupMapZoomHandler(); // Añadir un manejador para capturar cambios de zoom
+      this.setupMapZoomHandler(); 
     }
   }
 
@@ -117,19 +113,18 @@ export class LocationPickerComponent implements OnInit, OnDestroy, AfterViewInit
     });
   }
 
-  // Nuevo manejador de eventos para el zoom del mapa
   private setupMapZoomHandler(): void {
     if (!this.map) return;
     this.map.on('zoomend', () => {
-      this.currentMapZoom = this.map!.getZoom(); // Actualizar el zoom actual al finalizar el zoom
-      console.log('Map zoom changed to:', this.currentMapZoom); // Para depuración
+      this.currentMapZoom = this.map!.getZoom(); 
+      console.log('Map zoom changed to:', this.currentMapZoom); 
     });
   }
 
 
   private cleanupMap(): void {
     if (this.map) {
-      this.map.off(); // Desactiva todos los eventos
+      this.map.off(); 
       this.map.remove();
       this.map = undefined;
     }
@@ -143,20 +138,17 @@ export class LocationPickerComponent implements OnInit, OnDestroy, AfterViewInit
 
   public setMapCenterAndMarker(lat: number, lng: number, zoom?: number): void {
     if (!this.isMapReady || !this.map) {
-      // Si el mapa no está listo, intentamos de nuevo después de un pequeño retraso
-      // Esto es crucial para cuando se llama desde el padre antes de que initializeMap haya terminado
       setTimeout(() => this.setMapCenterAndMarker(lat, lng, zoom), 100);
       return;
     }
 
-    // Usamos el zoom pasado o el zoom actual del mapa
     const effectiveZoom = zoom !== undefined ? zoom : this.currentMapZoom;
 
     this.map.setView([lat, lng], effectiveZoom);
     if (this.enableMarker) {
       this.addOrUpdateMarker(lat, lng);
     }
-    this.map.invalidateSize(); // Asegurarse de que el mapa se redibuje correctamente
+    this.map.invalidateSize(); 
   }
 
   private addOrUpdateMarker(lat: number, lng: number): void {
@@ -219,7 +211,7 @@ export class LocationPickerComponent implements OnInit, OnDestroy, AfterViewInit
       this.locationSelected.emit({
         lat,
         lng,
-        zoom: this.currentMapZoom, // Incluir el zoom actual al emitir el evento
+        zoom: this.currentMapZoom, 
         georefAddress,
         fullGeorefResponse
       });
@@ -252,12 +244,11 @@ export class LocationPickerComponent implements OnInit, OnDestroy, AfterViewInit
         const lng = primeraDireccion.ubicacion?.lon;
 
         if (lat !== undefined && lng !== undefined && lat !== null && lng !== null) {
-          // Llamar a setMapCenterAndMarker con el zoom actual del mapa
           this.setMapCenterAndMarker(lat, lng, this.currentMapZoom);
           this.locationSelected.emit({
             lat,
             lng,
-            zoom: this.currentMapZoom, // Incluir el zoom actual
+            zoom: this.currentMapZoom, 
             georefAddress: {
               street: primeraDireccion.calle?.nombre || '',
               number: primeraDireccion.altura?.valor !== undefined && primeraDireccion.altura.valor !== null ? String(primeraDireccion.altura.valor) : null,

@@ -8,10 +8,9 @@ import {
   IsNumber,
   ValidateIf
 } from 'class-validator';
-import { Type, Transform } from 'class-transformer'; // <-- ¡IMPORTANTE: Añadir Transform aquí!
+import { Type, Transform } from 'class-transformer';
 import { CreateRestaurantDto } from './create-restaurant.dto';
 
-// DTO para ubicación
 class UpdateLocationDto {
   @IsNumber()
   @IsNotEmpty()
@@ -24,7 +23,6 @@ class UpdateLocationDto {
   lng: number;
 }
 
-// DTO para dirección (renombrado de AddressDto a UpdateAddressDto para consistencia)
 class UpdateAddressDto {
   @IsString()
   @IsNotEmpty()
@@ -65,11 +63,8 @@ export class UpdateRestaurantDto extends PartialType(CreateRestaurantDto) {
 
   @IsOptional()
   @IsString()
-  // Este decorador transforma la cadena vacía ('') que viene del frontend a null.
-  // Esto es útil si tu columna en la base de datos prefiere NULL para campos opcionales sin valor,
-  // o si TypeORM maneja mejor los nulls en tu contexto.
   @Transform(({ value }) => (value === '' ? null : value))
-  description?: string | null; // El tipo también refleja que puede ser string o null
+  description?: string | null; 
 
   @ValidateNested()
   @Type(() => UpdateAddressDto)

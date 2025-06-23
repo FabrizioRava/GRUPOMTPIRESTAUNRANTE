@@ -255,7 +255,6 @@ textarea.form-input.resize-none {
   }
 }
 
-/* ESTILOS ESPECÍFICOS PARA LEAFLET */
 .leaflet-control-container {
   z-index: 99999;
 }

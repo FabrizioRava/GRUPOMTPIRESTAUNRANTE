@@ -1,22 +1,17 @@
-/* src/app/core/sidebar/sidebar.component.css */
-
-/* Importar Font Awesome para los iconos (si no está globalmente) */
 @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css');
-/* Importar fuente Inter */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
 :host {
   font-family: 'Inter', sans-serif;
 }
 
-/* Overlay oscuro que cubre el contenido cuando el sidebar está abierto */
 .sidebar-overlay {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.6); /* Semi-transparente */
+  background-color: rgba(0, 0, 0, 0.6); 
   z-index: 1000;
   opacity: 0;
   visibility: hidden;
@@ -28,44 +23,42 @@
   visibility: visible;
 }
 
-/* Estilos del menú lateral en sí */
 .sidebar {
   position: fixed;
   top: 0;
-  left: -280px; /* Escondido por defecto (ancho + un poco de margen) */
-  width: 250px; /* Ancho del sidebar */
+  left: -280px; 
+  width: 250px;
   height: 100%;
-  background-color: #FFFFFF; /* ¡BLANCO para el sidebar! */
-  color: #343a40; /* Color de texto general para el sidebar (un gris oscuro para contraste) */
-  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.4); /* Sombra más suave y extendida */
+  background-color: #FFFFFF; 
+  color: #343a40; 
+  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.4); 
   z-index: 1001;
   transition: left 0.3s ease-in-out;
   display: flex;
   flex-direction: column;
-  padding: 0; /* Eliminado el padding superior del sidebar para que el header tenga su propio padding */
+  padding: 0; 
 }
 
 .sidebar.active {
-  left: 0; /* Visible */
+  left: 0; 
 }
 
 .sidebar-header {
-  /* Fondo BLANCO para la barra superior del sidebar */
-  background-color: #FFFFFF; /* Mismo blanco que el fondo general del sidebar */
-  padding: 1rem 20px; /* Padding para la barra superior */
+  background-color: #FFFFFF; 
+  padding: 1rem 20px;
   text-align: right;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.1); /* Separador sutil, ahora más oscuro */
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1); 
 }
 
 .close-btn {
   background: none;
   border: none;
-  color: #343a40; /* ¡Color NEGRO para el botón de cerrar! */
+  color: #343a40; 
   font-size: 1.8rem;
   cursor: pointer;
   padding: 5px;
   transition: color 0.2s ease-in-out, background-color 0.2s ease;
-  border-radius: 50%; /* Botón de cierre circular */
+  border-radius: 50%; 
   width: 40px;
   height: 40px;
   display: inline-flex;
@@ -74,13 +67,13 @@
 }
 
 .close-btn:hover {
-  color: #000000; /* Negro al pasar el mouse */
-  background-color: rgba(0, 0, 0, 0.05); /* Ligero fondo al pasar el mouse */
+  color: #000000; 
+  background-color: rgba(0, 0, 0, 0.05); 
 }
 
 .sidebar-content {
   flex-grow: 1;
-  padding: 10px 0; /* Padding ajustado para el contenido */
+  padding: 10px 0; 
   display: flex;
   flex-direction: column;
   gap: 5px;
@@ -88,14 +81,14 @@
 
 .sidebar-footer {
   padding: 15px 0;
-  border-top: 1px solid rgba(0, 0, 0, 0.2); /* Separador más oscuro */
+  border-top: 1px solid rgba(0, 0, 0, 0.2); 
   text-align: center;
 }
 
 .sidebar-button {
   background: none;
   border: none;
-  color: #343a40; /* ¡Color NEGRO para los botones! */
+  color: #343a40; 
   width: 100%;
   padding: 12px 20px;
   text-align: left;
@@ -108,22 +101,20 @@
 }
 
 .sidebar-button:hover {
-  background-color: #e0e0e0; /* Un gris claro para el hover */
-  color: #000000; /* Negro al pasar el mouse */
+  background-color: #e0e0e0; 
+  color: #000000; 
 }
 
 .logout-button {
-  color: #dc3545; /* Rojo de Bootstrap para una acción de salida, o puedes usar negro si prefieres */
-  /* Si quieres que sea negro como los demás, cámbialo a #343a40 */
+  color: #dc3545; 
   font-weight: 600;
 }
 
 .logout-button:hover {
-  background-color: rgba(220, 53, 69, 0.1); /* Fondo rojo transparente al pasar el mouse */
+  background-color: rgba(220, 53, 69, 0.1); 
   color: #dc3545;
 }
 
-/* Margen para los íconos de Font Awesome */
 .mr-2 {
   margin-right: 0.75rem;
 }

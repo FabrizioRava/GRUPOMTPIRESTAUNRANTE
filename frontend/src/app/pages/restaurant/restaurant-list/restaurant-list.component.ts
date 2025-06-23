@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef, AfterViewInit, HostListener, ChangeDetectorRef } from '@angular/core'; // Importar ChangeDetectorRef
+import { Component, OnInit, ViewChild, ElementRef, AfterViewInit, HostListener, ChangeDetectorRef } from '@angular/core'; 
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule, ActivatedRoute } from '@angular/router';
 import { RestaurantService } from '../../../services/restaurant.service';
@@ -33,14 +33,14 @@ export class RestaurantListComponent implements OnInit, AfterViewInit {
   currentCarouselPage: number = 1;
   totalPages: number = 0;
 
-  cardWidthWithMargin: number = 700; // Este valor sigue siendo clave
+  cardWidthWithMargin: number = 700; 
 
   constructor(
     private restaurantService: RestaurantService,
     private router: Router,
     private authService: AuthService,
     private activatedRoute: ActivatedRoute,
-    private cdr: ChangeDetectorRef // Inyectar ChangeDetectorRef
+    private cdr: ChangeDetectorRef 
   ) {}
 
   ngOnInit(): void {
@@ -59,16 +59,14 @@ export class RestaurantListComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    // Este hook se llama después de que la vista y las vistas hijas se inicializan.
-    // Damos un pequeño respiro para que el DOM se asiente antes de los cálculos iniciales.
     setTimeout(() => {
       this.calculateAndRenderCarousel();
-    }, 100); // Pequeño retraso
+    }, 100); 
   }
 
   @HostListener('window:resize', ['$event'])
   onResize(event: Event) {
-    this.calculateAndRenderCarousel(); // Recalcular en cada redimensionamiento
+    this.calculateAndRenderCarousel(); 
   }
 
   loadRestaurants(): void {
@@ -88,9 +86,7 @@ export class RestaurantListComponent implements OnInit, AfterViewInit {
       next: (data: Restaurant[]) => {
         this.restaurants = data;
         this.isLoading = false;
-        // Forzar la detección de cambios para que el DOM se actualice antes de calcular
         this.cdr.detectChanges();
-        // Llamar al cálculo después de que los datos estén y el DOM se haya actualizado
         this.calculateAndRenderCarousel();
       },
       error: (err: HttpErrorResponse) => {
@@ -104,7 +100,6 @@ export class RestaurantListComponent implements OnInit, AfterViewInit {
     });
   }
 
-  // Nueva función para encapsular el cálculo y la actualización
   calculateAndRenderCarousel(): void {
     if (this.restaurants.length === 0) {
       this.cardsPerView = 1;
@@ -113,7 +108,6 @@ export class RestaurantListComponent implements OnInit, AfterViewInit {
       return;
     }
 
-    // Calcula el número de tarjetas por vista
     if (window.innerWidth >= 1450) {
         this.cardsPerView = 2;
     } else if (window.innerWidth >= 1024) {
@@ -126,7 +120,6 @@ export class RestaurantListComponent implements OnInit, AfterViewInit {
 
     this.totalPages = (this.cardsPerView > 0) ? Math.ceil(this.restaurants.length / this.cardsPerView) : 0;
 
-    // Ajusta la página actual si es necesario
     if (this.currentCarouselPage > this.totalPages && this.totalPages > 0) {
       this.currentCarouselPage = this.totalPages;
     } else if (this.totalPages === 0 && this.restaurants.length > 0) {
@@ -136,16 +129,12 @@ export class RestaurantListComponent implements OnInit, AfterViewInit {
       this.totalPages = 0;
     }
     
-    // Log para depuración
     console.log('calculateAndRenderCarousel - Total Pages:', this.totalPages, 'Current Page:', this.currentCarouselPage, 'Restaurants:', this.restaurants.length, 'Cards Per View:', this.cardsPerView);
 
 
-    // Asegurarse de que el DOM esté listo antes de intentar scrollear
     if (this.restaurantCarouselInner && this.restaurantCarouselInner.nativeElement) {
       this.updateCarouselPosition();
     } else {
-      // Si restaurantCarouselInner aún no está disponible, intentar de nuevo un poco más tarde
-      // Esto es una medida de seguridad, pero con ngAfterViewInit y cdr.detectChanges debería ser raro.
       setTimeout(() => {
         this.updateCarouselPosition();
       }, 50);
@@ -162,13 +151,8 @@ export class RestaurantListComponent implements OnInit, AfterViewInit {
   updateCarouselPosition(): void {
     if (this.restaurantCarouselInner && this.restaurantCarouselInner.nativeElement) {
       let scrollItemWidth: number = this.cardWidthWithMargin;
-
-      // Intentar obtener el ancho real del elemento de la tarjeta si es posible
       const firstCardItem = this.restaurantCarouselInner.nativeElement.querySelector('.restaurant-card-item');
       if (firstCardItem) {
-          // No necesitamos cambiar cardWidthWithMargin si 700px es el deseado
-          // Pero si quieres que el JS detecte el ancho real, usarías:
-          // scrollItemWidth = firstCardItem.offsetWidth;
       }
 
       const scrollAmount = (this.currentCarouselPage - 1) * this.cardsPerView * scrollItemWidth;

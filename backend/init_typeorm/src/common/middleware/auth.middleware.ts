@@ -12,10 +12,8 @@ export class AuthMiddleware implements NestMiddleware {
 
     const token = authHeader.split(' ')[1];
 
-    // Aquí deberías validar el token, por ahora solo lo imprimimos
     console.log('Token recibido:', token);
 
-    // Si el token es válido, sigue a la siguiente función
     next();
   }
 }

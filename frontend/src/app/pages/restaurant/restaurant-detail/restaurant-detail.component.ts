@@ -1,9 +1,8 @@
-// src/app/restaurant/restaurant-detail/restaurant-detail.component.ts
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RestaurantService } from '../../../services/restaurant.service';
-import { MenuService, MenuItem } from '../../../services/menu.service'; // Importar MenuItem
+import { MenuService, MenuItem } from '../../../services/menu.service'; 
 import { AuthService } from '../../../services/auth.service';
 import { Restaurant } from '../../../models/restaurant.model';
 import { LoadingSpinnerComponent } from '../../../shared/loading-spinner/loading-spinner.component';
@@ -21,7 +20,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 })
 export class RestaurantDetailComponent implements OnInit {
   restaurant: Restaurant | null = null;
-  menuItems: MenuItem[] = []; // ¡Tipado como MenuItem[]!
+  menuItems: MenuItem[] = []; 
   isOwner: boolean = false;
   errorMessage: string | null = null;
   isLoading: boolean = false;
@@ -73,7 +72,7 @@ export class RestaurantDetailComponent implements OnInit {
 
   loadMenu(restaurantId: number): void {
     this.menuService.getMenuByRestaurantId(restaurantId).subscribe({
-      next: (res: MenuItem[]) => { // ¡Tipado como MenuItem[]!
+      next: (res: MenuItem[]) => { 
         this.menuItems = res;
         console.log('RDC: Menús cargados:', this.menuItems);
       },
@@ -85,7 +84,6 @@ export class RestaurantDetailComponent implements OnInit {
   }
 
   deleteRestaurant(): void {
-    // ... (tu código existente para eliminar restaurante) ...
     if (!this.restaurant || !this.isOwner) {
       this.errorMessage = 'No tienes permiso para eliminar este restaurante o el restaurante no está cargado.';
       return;
@@ -100,7 +98,7 @@ export class RestaurantDetailComponent implements OnInit {
       next: () => {
         console.log('RDC: Restaurante eliminado con éxito.');
         this.isLoading = false;
-        this.router.navigate(['/restaurants']); // <-- CORREGIDO: Vuelve a la lista general
+        this.router.navigate(['/restaurants']); 
       },
         error: (err: HttpErrorResponse) => {
           this.isLoading = false;
@@ -122,20 +120,17 @@ export class RestaurantDetailComponent implements OnInit {
 
   onEditClick(): void {
     if (this.restaurant && this.isOwner) {
-      this.router.navigate(['/restaurants', 'edit', this.restaurant.id]); // <-- CORREGIDO
+      this.router.navigate(['/restaurants', 'edit', this.restaurant.id]); 
     } else {
       this.errorMessage = 'No tienes permiso para editar este restaurante o el restaurante no está cargado.';
     }
   }
-  // --- ¡ASEGÚRATE DE QUE ESTE MÉTODO ESTÉ EN TU ARCHIVO TS! ---
   onManageMenuClick(): void {
     if (this.restaurant && this.isOwner) {
       console.log('DEBUG: Navegando para gestionar menú del restaurante ID:', this.restaurant.id);
-      this.router.navigate(['/menus', 'manage', this.restaurant.id]); // <-- CORREGIDO
+      this.router.navigate(['/menus', 'manage', this.restaurant.id]); 
     } else {
       this.errorMessage = 'No tienes permiso para gestionar el menú de este restaurante o el restaurante no está cargado.';
     }
   }
-
-  // --- FIN DEL MÉTODO ---
 }
