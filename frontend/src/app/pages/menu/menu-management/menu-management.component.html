@@ -1,5 +1,5 @@
 <div class="menu-management-container">
-  <h2>Gestión de Menú para el Restaurante (ID: {{ restaurantId }})</h2>
+  <h2>Gestión de Menú</h2>
 
   <div *ngIf="isLoading" class="loading-overlay">
     <app-loading-spinner></app-loading-spinner>
@@ -11,33 +11,64 @@
 
   <div class="menu-form-section card">
     <div class="card-header">
-      <h3>Añadir Nuevo Ítem al Menú</h3>
+      <h3>{{ isEditMode ? 'Editar Ítem del Menú' : 'Añadir Nuevo Ítem al Menú' }}</h3>
     </div>
     <div class="card-body">
       <form [formGroup]="menuForm" (ngSubmit)="onSubmit()">
         <div class="mb-3">
           <label for="name" class="form-label">Nombre:</label>
-          <input type="text" id="name" formControlName="name" class="form-control"
-                 [class.is-invalid]="name?.invalid && (name?.dirty || name?.touched)">
-          <div *ngIf="name?.invalid && (name?.dirty || name?.touched)" class="invalid-feedback">
-            <div *ngIf="name?.errors?.['required']">El nombre es obligatorio.</div>
+          <input
+            type="text"
+            id="name"
+            formControlName="name"
+            class="form-control"
+            [class.is-invalid]="name?.invalid && (name?.dirty || name?.touched)"
+          />
+          <div
+            *ngIf="name?.invalid && (name?.dirty || name?.touched)"
+            class="invalid-feedback"
+          >
+            <div *ngIf="name?.errors?.['required']">
+              El nombre es obligatorio.
+            </div>
           </div>
         </div>
 
         <div class="mb-3">
           <label for="description" class="form-label">Descripción:</label>
-          <textarea id="description" formControlName="description" class="form-control" rows="3"
-                    [class.is-invalid]="description?.invalid && (description?.dirty || description?.touched)"></textarea>
-          <div *ngIf="description?.invalid && (description?.dirty || description?.touched)" class="invalid-feedback">
-            <div *ngIf="description?.errors?.['required']">La descripción es obligatoria.</div>
+          <textarea
+            id="description"
+            formControlName="description"
+            class="form-control"
+            rows="3"
+            [class.is-invalid]="
+              description?.invalid && (description?.dirty || description?.touched)
+            "
+          ></textarea>
+          <div
+            *ngIf="description?.invalid && (description?.dirty || description?.touched)"
+            class="invalid-feedback"
+          >
+            <div *ngIf="description?.errors?.['required']">
+              La descripción es obligatoria.
+            </div>
           </div>
         </div>
 
         <div class="mb-3">
           <label for="price" class="form-label">Precio:</label>
-          <input type="number" id="price" formControlName="price" class="form-control" step="0.01"
-                 [class.is-invalid]="price?.invalid && (price?.dirty || price?.touched)">
-          <div *ngIf="price?.invalid && (price?.dirty || price?.touched)" class="invalid-feedback">
+          <input
+            type="number"
+            id="price"
+            formControlName="price"
+            class="form-control"
+            step="0.01"
+            [class.is-invalid]="price?.invalid && (price?.dirty || price?.touched)"
+          />
+          <div
+            *ngIf="price?.invalid && (price?.dirty || price?.touched)"
+            class="invalid-feedback"
+          >
             <div *ngIf="price?.errors?.['required']">El precio es obligatorio.</div>
             <div *ngIf="price?.errors?.['min']">El precio debe ser mayor a 0.</div>
           </div>
@@ -45,21 +76,53 @@
 
         <div class="mb-3">
           <label for="imageUrl" class="form-label">URL de la Imagen:</label>
-          <input type="url" id="imageUrl" formControlName="imageUrl" class="form-control"
-                 [class.is-invalid]="imageUrl?.invalid && (imageUrl?.dirty || imageUrl?.touched)">
-          <div *ngIf="imageUrl?.invalid && (imageUrl?.dirty || imageUrl?.touched)" class="invalid-feedback">
-            <div *ngIf="imageUrl?.errors?.['required']">La URL de la imagen es obligatoria.</div>
-            <div *ngIf="imageUrl?.errors?.['pattern']">Por favor, ingresa una URL válida (ej. http://example.com/image.jpg).</div>
+          <input
+            type="url"
+            id="imageUrl"
+            formControlName="imageUrl"
+            class="form-control"
+            [class.is-invalid]="
+              imageUrl?.invalid && (imageUrl?.dirty || imageUrl?.touched)
+            "
+          />
+          <div
+            *ngIf="imageUrl?.invalid && (imageUrl?.dirty || imageUrl?.touched)"
+            class="invalid-feedback"
+          >
+            <div *ngIf="imageUrl?.errors?.['required']">
+              La URL de la imagen es obligatoria.
+            </div>
+            <div *ngIf="imageUrl?.errors?.['pattern']">
+              Por favor, ingresa una URL válida (ej.
+              http://example.com/image.jpg).
+            </div>
           </div>
         </div>
 
         <div class="mb-3">
           <label for="category" class="form-label">Categoría (Opcional):</label>
-          <input type="text" id="category" formControlName="category" class="form-control">
+          <input
+            type="text"
+            id="category"
+            formControlName="category"
+            class="form-control"
+          />
         </div>
 
-        <button type="submit" class="btn btn-primary" [disabled]="menuForm.invalid || isSubmitting">
-          {{ isSubmitting ? 'Añadiendo...' : 'Añadir Ítem' }}
+        <button
+          type="submit"
+          class="btn btn-primary"
+          [disabled]="menuForm.invalid || isSubmitting"
+        >
+          {{ isSubmitting ? 'Guardando...' : (isEditMode ? 'Confirmar Edición' : 'Añadir Ítem') }}
+        </button>
+        <button
+          *ngIf="isEditMode"
+          type="button"
+          class="btn btn-secondary ms-2"
+          (click)="cancelEdit()"
+        >
+          Cancelar Edición
         </button>
       </form>
     </div>
@@ -74,19 +137,36 @@
         No hay ítems en el menú todavía. ¡Añade uno!
       </div>
       <ul class="list-group" *ngIf="menuItems.length > 0">
-        <li class="list-group-item d-flex justify-content-between align-items-center" *ngFor="let item of menuItems">
+        <li
+          class="list-group-item d-flex justify-content-between align-items-center"
+          *ngFor="let item of menuItems"
+        >
           <div>
             <strong>{{ item.name }}</strong>
             <span *ngIf="item.category"> ({{ item.category }})</span>:
-            <br>
+            <br />
             <small>{{ item.description }}</small>
-            <br>
+            <br />
             <strong>Precio: ${{ item.price }}</strong>
           </div>
           <div class="d-flex align-items-center">
-            <img [src]="item.imageUrl" alt="{{ item.name }}" class="menu-item-thumb me-2">
-            <button class="btn btn-warning btn-sm me-2" (click)="editMenuItem(item)">Editar</button>
-            <button class="btn btn-danger btn-sm" (click)="deleteMenuItem(item.id)">Eliminar</button>
+            <img
+              [src]="item.imageUrl"
+              alt="{{ item.name }}"
+              class="menu-item-thumb me-2"
+            />
+            <button
+              class="btn btn-edit-custom btn-sm me-2"
+              (click)="editMenuItem(item)"
+            >
+              Editar
+            </button>
+            <button
+              class="btn btn-danger btn-sm"
+              (click)="confirmDelete(item.id!)"
+            >
+              Eliminar
+            </button>
           </div>
         </li>
       </ul>
@@ -94,6 +174,23 @@
   </div>
 
   <div class="text-center mt-3">
-    <button class="btn btn-secondary" [routerLink]="['/restaurant', restaurantId]">Volver al Restaurante</button>
+    <button class="btn btn-secondary" [routerLink]="['/restaurants', restaurantId]">
+      Volver al Restaurante
+    </button>
+  </div>
+
+  <div class="confirmation-overlay" *ngIf="showDeleteConfirmation">
+    <div class="confirmation-dialog card">
+      <div class="card-header">
+        <h3>Confirmar Eliminación</h3>
+      </div>
+      <div class="card-body">
+        <p>¿Estás seguro de que quieres eliminar este ítem del menú?</p>
+        <div class="d-flex justify-content-end">
+          <button class="btn btn-danger me-2" (click)="deleteConfirmed()">Eliminar</button>
+          <button class="btn btn-secondary" (click)="cancelDelete()">Cancelar</button>
+        </div>
+      </div>
+    </div>
   </div>
 </div>

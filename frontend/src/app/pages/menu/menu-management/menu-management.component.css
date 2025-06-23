@@ -20,7 +20,7 @@ h2 {
   border: 1px solid #e0e0e0;
   border-radius: 8px;
   margin-bottom: 20px;
-  overflow: hidden; 
+  overflow: hidden;
 }
 
 .card-header {
@@ -108,7 +108,7 @@ h2 {
   object-fit: cover;
   border-radius: 4px;
   margin-left: 15px;
-  flex-shrink: 0; 
+  flex-shrink: 0;
 }
 
 .list-group-item strong {
@@ -119,7 +119,6 @@ h2 {
   color: #666;
 }
 
-.list-group-item .btn-warning,
 .list-group-item .btn-danger {
   padding: 5px 10px;
   font-size: 0.85em;
@@ -135,9 +134,75 @@ h2 {
 }
 
 .invalid-feedback {
-  display: block; 
+  display: block;
   width: 100%;
   margin-top: 0.25rem;
   font-size: 0.875em;
   color: #dc3545;
+}
+
+/* Estilos para el botón de editar personalizado (morado) */
+.btn-edit-custom {
+  background-color: #7B6CC9; /* Color morado de la imagen */
+  border-color: #7B6CC9;
+  color: #fff;
+  transition: background-color 0.2s, border-color 0.2s;
+  padding: 5px 10px;
+  font-size: 0.85em;
+}
+
+.btn-edit-custom:hover {
+  background-color: #6a5bbd; /* Un poco más oscuro al pasar el mouse */
+  border-color: #6a5bbd;
+  color: #fff;
+}
+
+/* Estilos para el modal de confirmación en la página */
+.confirmation-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1050; /* Z-index alto para que esté por encima de todo */
+}
+
+.confirmation-dialog {
+  background-color: #fff;
+  padding: 25px;
+  border-radius: 8px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  width: 100%;
+  max-width: 400px;
+  text-align: center;
+}
+
+.confirmation-dialog .card-header {
+  background-color: #f8d7da; /* Un color suave para la cabecera de advertencia */
+  color: #721c24; /* Color de texto para la advertencia */
+  border-bottom: 1px solid #f5c6cb;
+  padding: 10px 15px;
+  border-radius: 8px 8px 0 0;
+}
+
+.confirmation-dialog .card-header h3 {
+  color: #721c24; /* Asegura que el título sea del color de advertencia */
+}
+
+.confirmation-dialog .card-body {
+  padding-top: 20px;
+}
+
+.confirmation-dialog p {
+  margin-bottom: 25px;
+  font-size: 1.1em;
+  color: #333;
+}
+
+.confirmation-dialog .d-flex button {
+  min-width: 90px;
 }
