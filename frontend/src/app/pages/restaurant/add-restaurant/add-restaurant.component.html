@@ -5,85 +5,74 @@
     </h2>
 
     <form [formGroup]="restaurantForm" (ngSubmit)="onSubmit()" class="form-content">
-      <div class="form-group">
-        <label for="name" class="form-label">Nombre del Restaurante</label>
-        <input
-          id="name"
-          type="text"
-          formControlName="name"
-          class="form-input"
-          placeholder="Ej: La Esquina del Sabor"
-        >
-        <div *ngIf="restaurantForm.get('name')?.invalid && (restaurantForm.get('name')?.dirty || restaurantForm.get('name')?.touched)" class="form-error-message">
-          <div *ngIf="restaurantForm.get('name')?.errors?.['required']">El nombre es obligatorio.</div>
-          <div *ngIf="restaurantForm.get('name')?.errors?.['maxlength']">El nombre no puede exceder 100 caracteres.</div>
-        </div>
-      </div>
-
-      <div class="form-group">
-        <label for="imageUrl" class="form-label">URL de la Imagen</label>
-        <input
-          id="imageUrl"
-          type="url"
-          formControlName="imageUrl"
-          class="form-input"
-          placeholder="Ej: https://ejemplo.com/imagen.jpg"
-        >
-        <div *ngIf="restaurantForm.get('imageUrl')?.invalid && (restaurantForm.get('imageUrl')?.dirty || restaurantForm.get('imageUrl')?.touched)" class="form-error-message">
-          <div *ngIf="restaurantForm.get('imageUrl')?.errors?.['required']">La URL de la imagen es obligatoria.</div>
-          <div *ngIf="restaurantForm.get('imageUrl')?.errors?.['pattern']">Por favor ingrese una URL válida (ej: https://...).</div>
-        </div>
-      </div>
-
-      <div class="form-group">
-        <label for="description" class="form-label">Descripción (Opcional)</label>
-        <textarea
-          id="description"
-          formControlName="description"
-          rows="3"
-          class="form-input resize-none"
-          placeholder="Ej: Un lugar acogedor con la mejor comida casera..."
-        ></textarea>
-        <div *ngIf="restaurantForm.get('description')?.errors?.['maxlength'] && (restaurantForm.get('description')?.dirty || restaurantForm.get('description')?.touched)" class="form-error-message">
-          La descripción no puede exceder 500 caracteres.
-        </div>
-      </div>
-
-      <fieldset formGroupName="address" class="address-fieldset">
-        <legend class="fieldset-legend">Ubicación</legend>
-
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <div class="form-group">
-            <label for="province" class="form-label">Provincia</label>
-            <select
-              id="province"
-              formControlName="province"
-              class="form-select"
-            >
-              <option [ngValue]="null" disabled>Seleccione una provincia</option>
-              <option *ngFor="let province of allProvinces" [ngValue]="province.id">{{ province.nombre }}</option>
-            </select>
-            <div *ngIf="restaurantForm.get('address.province')?.invalid && (restaurantForm.get('address.province')?.dirty || restaurantForm.get('address.province')?.touched)" class="form-error-message">
-              <div *ngIf="restaurantForm.get('address.province')?.errors?.['required']">La provincia es obligatoria.</div>
-            </div>
+      <div class="form-left-column">
+        <div class="form-group">
+          <label for="name" class="form-label">Nombre del Restaurante</label>
+          <input
+            id="name"
+            type="text"
+            formControlName="name"
+            class="form-input"
+            placeholder="Ej: La Esquina del Sabor"
+          >
+          <div *ngIf="restaurantForm.get('name')?.invalid && (restaurantForm.get('name')?.dirty || restaurantForm.get('name')?.touched)" class="form-error-message">
+            <div *ngIf="restaurantForm.get('name')?.errors?.['required']">El nombre es obligatorio.</div>
+            <div *ngIf="restaurantForm.get('name')?.errors?.['maxlength']">El nombre no puede exceder 100 caracteres.</div>
           </div>
+        </div>
 
-          <div class="form-group">
-            <label for="city" class="form-label">Ciudad</label>
-            <select
-              id="city"
-              formControlName="city"
-              class="form-select"
-              [disabled]="!restaurantForm.get('address.province')?.value || filteredMunicipalities.length === 0"
-            >
-              <option [ngValue]="null" disabled>Seleccione una ciudad</option>
-              <option *ngFor="let municipality of filteredMunicipalities" [ngValue]="municipality.id">{{ municipality.nombre }}</option>
-            </select>
-            <div *ngIf="restaurantForm.get('address.city')?.invalid && (restaurantForm.get('address.city')?.dirty || restaurantForm.get('address.city')?.touched)" class="form-error-message">
-              <div *ngIf="restaurantForm.get('address.city')?.errors?.['required']">La ciudad es obligatoria.</div>
-            </div>
+        <div class="form-group">
+          <label for="imageUrl" class="form-label">URL de la Imagen</label>
+          <input
+            id="imageUrl"
+            type="url"
+            formControlName="imageUrl"
+            class="form-input"
+            placeholder="Ej: https://ejemplo.com/imagen.jpg"
+          >
+          <div *ngIf="restaurantForm.get('imageUrl')?.invalid && (restaurantForm.get('imageUrl')?.dirty || restaurantForm.get('imageUrl')?.touched)" class="form-error-message">
+            <div *ngIf="restaurantForm.get('imageUrl')?.errors?.['required']">La URL de la imagen es obligatoria.</div>
+            <div *ngIf="restaurantForm.get('imageUrl')?.errors?.['pattern']">Por favor ingrese una URL válida (ej: https://...).</div>
           </div>
+        </div>
 
+        <div class="form-group">
+          <label for="description" class="form-label">Descripción (Opcional)</label>
+          <textarea
+            id="description"
+            formControlName="description"
+            rows="3"
+            class="form-input resize-none"
+            placeholder="Ej: Un lugar acogedor con la mejor comida casera..."
+          ></textarea>
+          <div *ngIf="restaurantForm.get('description')?.errors?.['maxlength'] && (restaurantForm.get('description')?.dirty || restaurantForm.get('description')?.touched)" class="form-error-message">
+            La descripción no puede exceder 500 caracteres.
+          </div>
+        </div>
+
+        <fieldset formGroupName="address" class="address-fieldset no-border">
+          <legend class="fieldset-legend">Ubicación</legend>
+          
+          <app-location-dropdowns
+            [selectedProvinceId]="selectedProvinceForDropdown"
+            [selectedCityId]="selectedCityForDropdown"
+            [forceLoadMunicipalities]="forceLoadMunicipalitiesForDropdown"
+            (provinceChange)="onProvinceSelected($event)"
+            (cityChange)="onCitySelected($event)"
+            (provincesLoaded)="onProvincesLoaded($event)"
+          ></app-location-dropdowns>
+          
+          <div *ngIf="restaurantForm.get('address.province')?.invalid && (restaurantForm.get('address.province')?.dirty || restaurantForm.get('address.province')?.touched)" class="form-error-message">
+            <div *ngIf="restaurantForm.get('address.province')?.errors?.['required']">La provincia es obligatoria.</div>
+          </div>
+          <div *ngIf="restaurantForm.get('address.city')?.invalid && (restaurantForm.get('address.city')?.dirty || restaurantForm.get('address.city')?.touched)" class="form-error-message">
+            <div *ngIf="restaurantForm.get('address.city')?.errors?.['required']">La ciudad es obligatoria.</div>
+          </div>
+        </fieldset>
+      </div>
+
+      <div class="form-right-column">
+        <fieldset formGroupName="address" class="address-fieldset no-border">
           <div class="form-group">
             <label for="street" class="form-label">Calle</label>
             <input
@@ -114,12 +103,12 @@
               <div *ngIf="restaurantForm.get('address.number')?.errors?.['maxlength']">El número no puede exceder 20 caracteres.</div>
             </div>
           </div>
-        </div>
+        </fieldset>
 
         <input type="hidden" formControlName="latitude">
         <input type="hidden" formControlName="longitude">
 
-        <div class="form-group mt-6">
+        <div class="form-group map-group">
           <label class="form-label">Seleccione ubicación en el mapa</label>
           <div class="map-container">
             <app-location-picker
@@ -130,7 +119,7 @@
             <div *ngIf="restaurantForm.get('address.latitude')?.errors?.['required']">Debe seleccionar una ubicación en el mapa.</div>
           </div>
         </div>
-      </fieldset>
+      </div>
 
       <div *ngIf="isLoading" class="loading-spinner-container">
         <app-loading-spinner></app-loading-spinner>

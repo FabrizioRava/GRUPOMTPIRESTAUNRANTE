@@ -5,7 +5,7 @@ import { Restaurant } from '../entities/restaurant/restaurant.entity';
 import { Menu } from '../entities/menu/menu.entity';
 import { CreateRestaurantDto } from './dto/create-restaurant.dto';
 import { UpdateRestaurantDto } from './dto/update-restaurant.dto';
-import { CreateMenuDto } from '../menu/dto/create-menu.dto';
+import { CreateMenuDto } from '../menus/dto/create-menu.dto';
 
 @Injectable()
 export class RestaurantService {

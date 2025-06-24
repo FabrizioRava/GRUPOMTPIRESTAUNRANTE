@@ -1,105 +1,91 @@
-import { Component } from '@angular/core';
-import { FormsModule, NgForm } from '@angular/forms';
-import { Router, RouterLink } from '@angular/router';
-import { CommonModule } from '@angular/common'; 
-import { LoadingSpinnerComponent } from '../../../shared/loading-spinner/loading-spinner.component'; 
-import { AuthService } from '../../../services/auth.service'; 
-import { finalize } from 'rxjs/operators'; 
+// src/app/register/register.component.ts
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { lastValueFrom } from 'rxjs';
+import { LocationDropdownsComponent } from '../../../shared/location-dropdowns/location-dropdowns.component';
 
 @Component({
   selector: 'app-register',
   standalone: true,
-  imports: [FormsModule, RouterLink, CommonModule, LoadingSpinnerComponent],
+  imports: [CommonModule, ReactiveFormsModule, FormsModule, HttpClientModule, LocationDropdownsComponent],
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.css']
 })
-export class RegisterComponent {
-  formData = {
-    name: '',
-    email: '',
-    password: '',
-    confirmPassword: ''
-  };
+export class RegisterComponent implements OnInit {
+  registerForm: FormGroup;
+  registrationSuccess = false;
+  registrationError: string | null = null;
 
-  isLoading = false;
-  errorMessage: string | null = null;
-  successMessage: string | null = null; 
-  passwordsMatch = true;
-  formSubmitted = false; 
-
-  constructor(
-    private authService: AuthService, 
-    private router: Router
-  ) {}
-
-
-  checkPasswords(): void {
-    this.passwordsMatch = this.formData.password === this.formData.confirmPassword;
-    if (!this.passwordsMatch) {
-      this.errorMessage = 'Las contraseñas no coinciden.';
-    } else if (this.errorMessage === 'Las contraseñas no coinciden.') {
-      this.errorMessage = null;
-    }
+  constructor(private fb: FormBuilder, private http: HttpClient) {
+    this.registerForm = this.fb.group({
+      name: ['', Validators.required],
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', [Validators.required, Validators.minLength(6)]],
+      confirmPassword: ['', Validators.required],
+      provinceId: [null as string | null, Validators.required], // Valor inicial nulo
+      cityId: [null as string | null, Validators.required]     // Valor inicial nulo
+    }, { validators: this.passwordMatchValidator });
   }
 
+  ngOnInit(): void {}
 
-  onSubmit(registerForm: NgForm): void {
-    this.formSubmitted = true; 
-    this.errorMessage = null; 
-    this.successMessage = null; 
+  passwordMatchValidator(form: FormGroup) {
+    const password = form.get('password')?.value;
+    const confirmPassword = form.get('confirmPassword')?.value;
+    return password === confirmPassword ? null : { mismatch: true };
+  }
 
-    if (!registerForm.valid) {
-      this.markFormControlsAsTouched(registerForm); 
-      this.errorMessage = 'Por favor, complete todos los campos requeridos y corrija los errores.';
+  onProvinceChanged(provinceId: string | null): void {
+    // Al recibir un cambio de provincia del dropdown, actualizamos el FormControl
+    // con { emitEvent: false } para evitar que el 'valueChanges' del formulario padre
+    // provoque un ciclo de re-evaluación innecesario que afecte al hijo.
+    this.registerForm.get('provinceId')?.setValue(provinceId, { emitEvent: false });
+    this.registerForm.get('cityId')?.setValue(null, { emitEvent: false }); // Siempre resetear la ciudad
+    // Luego de actualizar los controles, marcamos los controles como dirty/touched
+    // para que las validaciones y mensajes de error se muestren correctamente si es necesario.
+    this.registerForm.get('provinceId')?.markAsDirty();
+    this.registerForm.get('provinceId')?.markAsTouched();
+    this.registerForm.get('cityId')?.markAsDirty();
+    this.registerForm.get('cityId')?.markAsTouched();
+  }
+
+  onCityChanged(cityId: string | null): void {
+    // Similarmente, al recibir un cambio de ciudad, actualizamos con { emitEvent: false }
+    this.registerForm.get('cityId')?.setValue(cityId, { emitEvent: false });
+    this.registerForm.get('cityId')?.markAsDirty();
+    this.registerForm.get('cityId')?.markAsTouched();
+  }
+
+  async onSubmit(): Promise<void> {
+    this.registrationSuccess = false;
+    this.registrationError = null;
+
+    if (this.registerForm.invalid) {
+      this.registerForm.markAllAsTouched();
+      this.registrationError = 'Por favor, complete todos los campos requeridos y corrija los errores.';
       return;
     }
 
-    this.checkPasswords(); 
-    if (!this.passwordsMatch) {
-      return; 
+    const { name, email, password, cityId } = this.registerForm.value;
+    try {
+      await lastValueFrom(this.http.post('http://localhost:3000/auth/register', {
+        name,
+        email,
+        password,
+        cityId: parseInt(cityId, 10)
+      }));
+      this.registrationSuccess = true;
+      this.registerForm.reset();
+      this.registerForm.markAsUntouched();
+      this.registerForm.markAsPristine();
+      // Aseguramos que los valores del formulario queden en nulo para que el dropdown vuelva a su estado inicial.
+      this.registerForm.get('provinceId')?.setValue(null, { emitEvent: false });
+      this.registerForm.get('cityId')?.setValue(null, { emitEvent: false });
+    } catch (error: any) {
+      console.error('Error en el registro:', error);
+      this.registrationError = error.error?.message || 'Hubo un error al intentar registrar el usuario. Por favor, intente de nuevo.';
     }
-
-    this.isLoading = true; 
-
-    const { confirmPassword, ...userData } = this.formData;
-
-    this.authService.register(userData)
-      .pipe(
-        finalize(() => {
-          this.isLoading = false; 
-        })
-      )
-      .subscribe({
-        next: () => {
-          this.successMessage = '¡Registro exitoso! Serás redirigido para iniciar sesión.';
-          setTimeout(() => {
-            this.router.navigate(['/login'], {
-              state: { registrationSuccess: true } 
-            });
-          }, 2000); 
-        },
-        error: (err) => {
-          this.handleRegistrationError(err);
-        }
-      });
-  }
-
-
-  private handleRegistrationError(error: any): void {
-    if (typeof error === 'string') {
-      this.errorMessage = error;
-    } else if (error?.message) {
-      this.errorMessage = error.message;
-    } else {
-      this.errorMessage = 'Ocurrió un error inesperado durante el registro. Por favor, intente nuevamente.';
-    }
-  }
-
-
-  private markFormControlsAsTouched(form: NgForm): void {
-    Object.values(form.controls).forEach(control => {
-      control.markAsTouched();
-    });
   }
 }
-

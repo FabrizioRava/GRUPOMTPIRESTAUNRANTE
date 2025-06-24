@@ -13,10 +13,10 @@ import {
   Request,
   Query, 
 } from '@nestjs/common';
-import { RestaurantService } from './restaurant.service';
+import { RestaurantService } from './restaurants.service';
 import { CreateRestaurantDto } from './dto/create-restaurant.dto';
 import { UpdateRestaurantDto } from './dto/update-restaurant.dto';
-import { CreateMenuDto } from '../menu/dto/create-menu.dto';
+import { CreateMenuDto } from '../menus/dto/create-menu.dto';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard'; 
 
 @Controller('restaurants') 

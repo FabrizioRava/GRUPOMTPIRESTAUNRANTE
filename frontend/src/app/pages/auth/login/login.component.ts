@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
-import { FormsModule } from '@angular/forms'; 
+import { FormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 
 import { LoadingSpinnerComponent } from '../../../shared/loading-spinner/loading-spinner.component';
-import { AuthService } from '../../../services/auth.service'; 
+import { AuthService } from '../../../services/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -47,7 +47,7 @@ export class LoginComponent {
         this.isLoading = false;
         this.userMessage = '¡Inicio de sesión exitoso! Redirigiendo...';
         this.isError = false;
-        this.router.navigate(['/restaurants']); 
+        this.router.navigate(['/restaurants']);
       },
       error: (err) => {
         this.isLoading = false;
@@ -59,7 +59,7 @@ export class LoginComponent {
   }
 
   goToRegister() {
-    this.router.navigate(['/register']);
+    this.router.navigate(['/auth/register']);
   }
 
   forgotPassword() {

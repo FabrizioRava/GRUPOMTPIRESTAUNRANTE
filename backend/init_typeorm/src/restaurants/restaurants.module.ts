@@ -1,9 +1,9 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Restaurant } from '../entities/restaurant/restaurant.entity';
-import { RestaurantService } from './restaurant.service';
-import { RestaurantController } from './restaurant.controller';
-import { MenuModule } from '../menu/menu.module';
+import { RestaurantService } from './restaurants.service';
+import { RestaurantController } from './restaurants.controller';
+import { MenuModule } from '../menus/menus.module';
 
 @Module({
   imports: [

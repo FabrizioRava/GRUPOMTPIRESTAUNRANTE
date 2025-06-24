@@ -1,40 +1,14 @@
-:root {
-  --bs-primary-subtle: #746fba; 
-  --bs-light-subtle: #efefef; 
-  --bs-font-sans-serif: 'Inter', sans-serif; 
+.bg-purple {
+  background-color: #7b6cc9;
 }
 
-.min-vh-100 {
-  min-height: 100vh;
+.form-card {
+  border-radius: 20px;
+  width: 400px;
+  z-index: 3;
 }
 
-.register-container {
-  max-width: 450px; 
-  width: 100%; 
-}
-
-.register-title {
-  font-family: var(--bs-font-sans-serif);
-  font-weight: 700;
-  font-size: 28px; 
-  line-height: 36px;
-  color: var(--bs-primary-subtle);
-}
-
-button .spinner-border {
-  width: 1.5rem;
-  height: 1.5rem;
-  margin-right: 0.5rem;
-}
-
-@media (max-width: 575.98px) { 
-  .register-container {
-    padding: 20px; 
-    border-radius: 12px; 
-  }
-
-  .register-title {
-    font-size: 24px;
-    margin-bottom: 20px;
-  }
+button.btn-primary {
+  background-color: #7b6cc9;
+  border: none;
 }

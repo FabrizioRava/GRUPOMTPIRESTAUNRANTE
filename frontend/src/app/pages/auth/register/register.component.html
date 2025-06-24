@@ -1,108 +1,78 @@
-<div class="d-flex min-vh-100 bg-light-subtle justify-content-center align-items-center p-3 p-md-5">
-  <div class="card register-container shadow-lg rounded-4 p-4 p-md-5 bg-white">
-    <h2 class="register-title text-primary-subtle text-center mb-4">Crear cuenta</h2>
+<div class="vh-100 d-flex position-relative">
+  <div class="w-50 d-flex align-items-center justify-content-center h-100 bg-light" style="z-index: 1;">
+    <div class="card shadow p-4 form-card">
+      <h3 class="text-center mb-4 text-secondary">Registrarse</h3>
+      <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+        <div class="mb-3">
+          <label class="form-label">Nombre</label>
+          <input type="text" class="form-control" formControlName="name" placeholder="Nombre">
+          <div *ngIf="registerForm.get('name')?.invalid && (registerForm.get('name')?.dirty || registerForm.get('name')?.touched)" class="text-danger small mt-1">
+            El nombre es obligatorio.
+          </div>
+        </div>
 
-    <div *ngIf="errorMessage" class="alert alert-danger mb-4 rounded-3" role="alert">
-      {{ errorMessage }}
+        <div class="mb-3">
+          <label class="form-label">Email</label>
+          <input type="email" class="form-control" formControlName="email" placeholder="Email">
+          <div *ngIf="registerForm.get('email')?.invalid && (registerForm.get('email')?.dirty || registerForm.get('email')?.touched)" class="text-danger small mt-1">
+            <div *ngIf="registerForm.get('email')?.errors?.['required']">El email es obligatorio.</div>
+            <div *ngIf="registerForm.get('email')?.errors?.['email']">Ingrese un email válido.</div>
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Contraseña</label>
+          <input type="password" class="form-control" formControlName="password" placeholder="Contraseña">
+          <div *ngIf="registerForm.get('password')?.invalid && (registerForm.get('password')?.dirty || registerForm.get('password')?.touched)" class="text-danger small mt-1">
+            <div *ngIf="registerForm.get('password')?.errors?.['required']">La contraseña es obligatoria.</div>
+            <div *ngIf="registerForm.get('password')?.errors?.['minlength']">La contraseña debe tener al menos 6 caracteres.</div>
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Confirmar contraseña</label>
+          <input type="password" class="form-control" formControlName="confirmPassword" placeholder="Confirmar contraseña">
+          <div *ngIf="registerForm.get('confirmPassword')?.invalid && (registerForm.get('confirmPassword')?.dirty || registerForm.get('confirmPassword')?.touched)" class="text-danger small mt-1">
+            La confirmación de contraseña es obligatoria.
+          </div>
+          <div *ngIf="registerForm.hasError('mismatch') && (registerForm.get('confirmPassword')?.dirty || registerForm.get('confirmPassword')?.touched)" class="text-danger small mt-1">
+            Las contraseñas no coinciden.
+          </div>
+        </div>
+
+        <app-location-dropdowns
+          [selectedProvinceId]="registerForm.get('provinceId')?.value"
+          [selectedCityId]="registerForm.get('cityId')?.value"
+          (provinceChange)="onProvinceChanged($event)"
+          (cityChange)="onCityChanged($event)">
+        </app-location-dropdowns>
+
+        <div *ngIf="registerForm.get('provinceId')?.invalid && (registerForm.get('provinceId')?.dirty || registerForm.get('provinceId')?.touched)" class="text-danger small mt-1">
+          La provincia es obligatoria.
+        </div>
+        <div *ngIf="registerForm.get('cityId')?.invalid && (registerForm.get('cityId')?.dirty || registerForm.get('cityId')?.touched)" class="text-danger small mt-1">
+          La ciudad es obligatoria.
+        </div>
+
+        <div *ngIf="registrationSuccess" class="alert alert-success mt-3" role="alert">
+          ¡Registro exitoso!
+        </div>
+        <div *ngIf="registrationError" class="alert alert-danger mt-3" role="alert">
+          {{ registrationError }}
+        </div>
+
+        <button type="submit" class="btn btn-primary w-100 mt-3" [disabled]="registerForm.invalid">Registrarse</button>
+      </form>
     </div>
-    <div *ngIf="successMessage" class="alert alert-success mb-4 rounded-3" role="alert">
-      {{ successMessage }}
-    </div>
+  </div>
 
-    <form (ngSubmit)="onSubmit(registerForm)" #registerForm="ngForm" novalidate>
-      <div class="mb-3">
-        <label for="name" class="form-label fw-semibold text-dark">Nombre completo</label>
-        <input
-          type="text"
-          id="name"
-          name="name"
-          class="form-control form-control-lg rounded-3"
-          placeholder="Tu nombre completo"
-          required
-          minlength="3"
-          [(ngModel)]="formData.name"
-          #name="ngModel"
-          [class.is-invalid]="name.invalid && (name.touched || formSubmitted)"
-        >
-        <div *ngIf="name.invalid && (name.touched || formSubmitted)" class="invalid-feedback">
-          <div *ngIf="name.errors?.['required']">El nombre es requerido.</div>
-          <div *ngIf="name.errors?.['minlength']">El nombre debe tener al menos 3 caracteres.</div>
-        </div>
-      </div>
+  <div class="w-50 h-100 bg-purple d-flex align-items-center justify-content-center">
+    <i class="bi bi-person-circle display-1" style="color: #b89ef2;"></i>
+  </div>
 
-      <div class="mb-3">
-        <label for="email" class="form-label fw-semibold text-dark">Email</label>
-        <input
-          type="email"
-          id="email"
-          name="email"
-          class="form-control form-control-lg rounded-3"
-          placeholder="tu_email@ejemplo.com"
-          required
-          email
-          [(ngModel)]="formData.email"
-          #email="ngModel"
-          [class.is-invalid]="email.invalid && (email.touched || formSubmitted)"
-        >
-        <div *ngIf="email.invalid && (email.touched || formSubmitted)" class="invalid-feedback">
-          <div *ngIf="email.errors?.['required']">El email es requerido.</div>
-          <div *ngIf="email.errors?.['email']">Por favor, introduce un email válido.</div>
-        </div>
-      </div>
-
-      <div class="mb-3">
-        <label for="password" class="form-label fw-semibold text-dark">Contraseña</label>
-        <input
-          type="password"
-          id="password"
-          name="password"
-          class="form-control form-control-lg rounded-3"
-          placeholder="********"
-          required
-          minlength="6"
-          [(ngModel)]="formData.password"
-          (input)="checkPasswords()"
-          #password="ngModel"
-          [class.is-invalid]="password.invalid && (password.touched || formSubmitted)"
-        >
-        <div *ngIf="password.invalid && (password.touched || formSubmitted)" class="invalid-feedback">
-          <div *ngIf="password.errors?.['required']">La contraseña es requerida.</div>
-          <div *ngIf="password.errors?.['minlength']">La contraseña debe tener al menos 6 caracteres.</div>
-        </div>
-      </div>
-
-      <div class="mb-4">
-        <label for="confirmPassword" class="form-label fw-semibold text-dark">Confirmar contraseña</label>
-        <input
-          type="password"
-          id="confirmPassword"
-          name="confirmPassword"
-          class="form-control form-control-lg rounded-3"
-          placeholder="********"
-          required
-          [(ngModel)]="formData.confirmPassword"
-          (input)="checkPasswords()"
-          #confirmPassword="ngModel"
-          [class.is-invalid]="(confirmPassword.touched || formSubmitted) && (!passwordsMatch || confirmPassword.invalid)"
-        >
-        <div *ngIf="(confirmPassword.touched || formSubmitted) && (!passwordsMatch || confirmPassword.invalid)" class="invalid-feedback">
-          <div *ngIf="confirmPassword.errors?.['required']">Confirma tu contraseña.</div>
-          <div *ngIf="!passwordsMatch">Las contraseñas no coinciden.</div>
-        </div>
-      </div>
-
-      <div class="d-grid gap-2 mb-3">
-        <button type="submit" class="btn btn-primary btn-lg rounded-pill fw-bold py-3" [disabled]="isLoading">
-          <span *ngIf="!isLoading">Registrarse</span>
-          <app-loading-spinner *ngIf="isLoading"></app-loading-spinner>
-        </button>
-      </div>
-
-      <div class="text-center mt-3">
-        ¿Ya tienes cuenta? <a routerLink="/login" class="text-primary-subtle fw-semibold text-decoration-none">Inicia sesión</a>
-      </div>
-    </form>
+  <div class="position-absolute top-0 start-50 translate-middle-x h-100" style="width: 200px; z-index: 2; transform: translateX(-50%) translateX(-40px);">
+    <svg class="w-100 h-100" viewBox="0 0 100 100" preserveAspectRatio="none">
+      <path d="M 100 0 Q 0 50 100 100 L 0 100 L 0 0 Z" fill="#f8f9fa" />
+    </svg>
   </div>
 </div>
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
