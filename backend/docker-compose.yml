@@ -2,19 +2,16 @@ version: '3.8'
 
 services:
   db:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    container_name: postgres-db
+    image: postgres:13
     ports:
       - "5432:5432"
+    environment:
+      POSTGRES_DB: mydatabase
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
     volumes:
-      - postgres_data:/var/lib/postgresql/data
-    networks:
-      - backend
+      - pgdata:/var/lib/postgresql/data
+    restart: always
 
 volumes:
-  postgres_data:
-
-networks:
-  backend:
+  pgdata:

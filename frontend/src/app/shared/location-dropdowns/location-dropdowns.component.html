@@ -8,16 +8,20 @@
       (ngModelChange)="onProvinceChange($event)"
       [disabled]="isLoadingProvinces"
     >
-      <option [ngValue]="null">
-        {{ isLoadingProvinces ? 'Cargando provincias...' : 'Seleccione una provincia' }}
-      </option>
+      <option [ngValue]="null">Seleccione una provincia</option>
       <option *ngFor="let province of provinces" [ngValue]="province.id">{{ province.nombre }}</option>
     </select>
   </div>
 
   <div class="mb-3">
     <label for="citySelect" class="form-label">Ciudad</label>
-    <select id="citySelect" class="form-select" [ngModel]="selectedCityId" (ngModelChange)="onCityChange($event)" [disabled]="disableCity || isLoadingMunicipalities">
+    <select
+      id="citySelect"
+      class="form-select"
+      [ngModel]="selectedCityId"
+      (ngModelChange)="onCityChange($event)"
+      [disabled]="disableCity || isLoadingMunicipalities"
+    >
       <option [ngValue]="null">
         {{ isLoadingMunicipalities ? 'Cargando ciudades...' : 'Seleccione una ciudad' }}
       </option>

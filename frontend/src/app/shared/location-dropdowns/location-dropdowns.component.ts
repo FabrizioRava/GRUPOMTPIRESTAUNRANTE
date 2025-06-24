@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, OnChanges, SimpleChanges, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { GeorefService } from '../../services/georef.service';
@@ -27,35 +27,39 @@ export class LocationDropdownsComponent implements OnInit, OnChanges {
   municipalities: GeorefMunicipality[] = [];
   isLoadingMunicipalities: boolean = false;
   disableCity: boolean = true;
-  isLoadingProvinces: boolean = false; 
+  isLoadingProvinces: boolean = false;
+  private hasLoadedProvincesInitially: boolean = false;
 
-  constructor(private georefService: GeorefService) {}
+  constructor(private georefService: GeorefService, private cdr: ChangeDetectorRef) {}
 
   ngOnInit(): void {
     this.loadProvinces();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes['selectedProvinceId'] && changes['selectedProvinceId'].currentValue !== changes['selectedProvinceId'].previousValue) {
-        if (this.selectedProvinceId) {
-            this.loadMunicipalitiesByProvince(this.selectedProvinceId);
+    if (changes['selectedProvinceId']) {
+      const currentProvinceId = changes['selectedProvinceId'].currentValue;
+      const previousProvinceId = changes['selectedProvinceId'].previousValue;
+
+      if (currentProvinceId !== previousProvinceId) {
+        if (currentProvinceId) {
+          this.loadMunicipalitiesByProvince(currentProvinceId);
         } else {
-            this.municipalities = [];
-            this.disableCity = true;
+          this.municipalities = [];
+          this.disableCity = true;
         }
+      }
     }
 
     if (changes['forceLoadMunicipalities'] && changes['forceLoadMunicipalities'].currentValue === true && this.selectedProvinceId) {
-      if (!this.isLoadingProvinces) {
-         if (this.municipalities.length === 0 || !this.municipalities.some(m => m.provincia.id === this.selectedProvinceId)) {
-             this.loadMunicipalitiesByProvince(this.selectedProvinceId);
-         }
+      if (!this.isLoadingProvinces && (this.municipalities.length === 0 || !this.municipalities.some(m => m.provincia.id === this.selectedProvinceId))) {
+        this.loadMunicipalitiesByProvince(this.selectedProvinceId);
       }
     }
   }
 
   async loadProvinces(): Promise<void> {
-    if (this.isLoadingProvinces || this.provinces.length > 0) {
+    if (this.isLoadingProvinces || this.hasLoadedProvincesInitially) {
       return;
     }
 
@@ -64,11 +68,13 @@ export class LocationDropdownsComponent implements OnInit, OnChanges {
       const provinces = await firstValueFrom(this.georefService.getProvinces().pipe(
         catchError(error => {
           console.error('Error al cargar provincias:', error);
+          this.isLoadingProvinces = false;
           return of([]);
         })
       ));
       this.provinces = provinces.sort((a, b) => a.nombre.localeCompare(b.nombre));
       this.provincesLoaded.emit(this.provinces);
+      this.hasLoadedProvincesInitially = true;
 
       if (this.selectedProvinceId) {
         this.loadMunicipalitiesByProvince(this.selectedProvinceId);
@@ -77,6 +83,8 @@ export class LocationDropdownsComponent implements OnInit, OnChanges {
       console.error('Error al cargar provincias:', error);
     } finally {
       this.isLoadingProvinces = false;
+      // Forzar la detección de cambios para actualizar el estado del 'disabled'
+      this.cdr.detectChanges();
     }
   }
 
@@ -89,15 +97,17 @@ export class LocationDropdownsComponent implements OnInit, OnChanges {
       const municipalities = await firstValueFrom(this.georefService.getMunicipalitiesByProvinceId(provinceId).pipe(
         catchError(error => {
           console.error('Error al cargar municipios:', error);
+          this.isLoadingMunicipalities = false;
           return of([]);
         })
       ));
       this.municipalities = municipalities.sort((a, b) => a.nombre.localeCompare(b.nombre));
-      this.disableCity = false;
+      this.disableCity = this.municipalities.length === 0;
     } catch (error) {
       console.error('Error al cargar municipios:', error);
     } finally {
       this.isLoadingMunicipalities = false;
+      this.cdr.detectChanges();
     }
   }
 
